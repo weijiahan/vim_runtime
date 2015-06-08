@@ -1,3 +1,5 @@
+根据amix的vim配置文件修改，具体修改内容待整理。
+
 # The Ultimate vimrc
 
 Over the last 8 years I have used and tweaked Vim. This is my Ultimate vimrc.
