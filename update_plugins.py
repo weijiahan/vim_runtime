@@ -43,6 +43,7 @@ tagbar https://github.com/majutsushi/tagbar
 markdown2ctags https://github.com/jszakmeister/markdown2ctags
 wmgraphviz.vim https://github.com/wannesm/wmgraphviz.vim
 vim-easymotion https://github.com/Lokaltog/vim-easymotion
+mark.vim https://github.com/mbriggs/mark.vim
 """.strip()
 
 # taglist.vim https://github.com/vim-scripts/taglist.vim
