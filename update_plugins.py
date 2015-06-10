@@ -15,7 +15,6 @@ mayansmoke https://github.com/vim-scripts/mayansmoke
 nerdtree https://github.com/scrooloose/nerdtree
 nginx.vim https://github.com/vim-scripts/nginx.vim
 open_file_under_cursor.vim https://github.com/amix/open_file_under_cursor.vim
-snipmate-snippets https://github.com/scrooloose/snipmate-snippets
 tlib https://github.com/vim-scripts/tlib
 vim-addon-mw-utils https://github.com/MarcWeber/vim-addon-mw-utils
 vim-bundle-mako https://github.com/sophacles/vim-bundle-mako
@@ -44,9 +43,11 @@ markdown2ctags https://github.com/jszakmeister/markdown2ctags
 wmgraphviz.vim https://github.com/wannesm/wmgraphviz.vim
 vim-easymotion https://github.com/Lokaltog/vim-easymotion
 mark.vim https://github.com/mbriggs/mark.vim
+ultisnips https://github.com/SirVer/ultisnips
 """.strip()
 
 # taglist.vim https://github.com/vim-scripts/taglist.vim
+# snipmate-snippets https://github.com/scrooloose/snipmate-snippets
 
 GITHUB_ZIP = '%s/archive/master.zip'
 
