@@ -44,6 +44,8 @@ vim-easymotion https://github.com/Lokaltog/vim-easymotion
 mark.vim https://github.com/mbriggs/mark.vim
 ultisnips https://github.com/SirVer/ultisnips
 vim-autoformat https://github.com/Chiel92/vim-autoformat
+gruvbox https://github.com/morhetz/gruvbox
+vim-gitgutter https://github.com/airblade/vim-gitgutter
 """.strip()
 
 # taglist.vim https://github.com/vim-scripts/taglist.vim
