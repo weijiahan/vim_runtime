@@ -24,7 +24,6 @@ vim-indent-object https://github.com/michaeljsmith/vim-indent-object
 vim-less https://github.com/groenewege/vim-less
 vim-markdown https://github.com/tpope/vim-markdown
 vim-pyte https://github.com/therubymug/vim-pyte
-vim-snipmate https://github.com/garbas/vim-snipmate
 vim-snippets https://github.com/honza/vim-snippets
 vim-surround https://github.com/tpope/vim-surround
 vim-expand-region https://github.com/terryma/vim-expand-region
@@ -49,6 +48,7 @@ vim-autoformat https://github.com/Chiel92/vim-autoformat
 
 # taglist.vim https://github.com/vim-scripts/taglist.vim
 # snipmate-snippets https://github.com/scrooloose/snipmate-snippets
+# vim-snipmate https://github.com/garbas/vim-snipmate
 
 GITHUB_ZIP = '%s/archive/master.zip'
 
