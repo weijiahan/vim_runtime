@@ -44,6 +44,7 @@ wmgraphviz.vim https://github.com/wannesm/wmgraphviz.vim
 vim-easymotion https://github.com/Lokaltog/vim-easymotion
 mark.vim https://github.com/mbriggs/mark.vim
 ultisnips https://github.com/SirVer/ultisnips
+vim-autoformat https://github.com/Chiel92/vim-autoformat
 """.strip()
 
 # taglist.vim https://github.com/vim-scripts/taglist.vim
