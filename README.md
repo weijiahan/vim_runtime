@@ -1,7 +1,12 @@
 根据amix的vim配置文件修改，具体修改内容待整理。
 
 sudo apt-get install exuberant-ctags
+
 sudo apt-get install ack-grep
+
+安装gotags
+
+安装YouCompleteMe
 
 # The Ultimate vimrc
 
