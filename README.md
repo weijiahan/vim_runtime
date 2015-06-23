@@ -1,5 +1,8 @@
 根据amix的vim配置文件修改，具体修改内容待整理。
 
+sudo apt-get install exuberant-ctags
+sudo apt-get install ack-grep
+
 # The Ultimate vimrc
 
 Over the last 8 years I have used and tweaked Vim. This is my Ultimate vimrc.
