@@ -4,6 +4,8 @@ sudo apt-get install exuberant-ctags
 
 sudo apt-get install ack-grep
 
+sudo apt-get install ruby-redcarpet
+
 安装gotags
 
 安装YouCompleteMe

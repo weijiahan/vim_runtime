@@ -252,3 +252,8 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 noremap <F3> :Autoformat<CR>
 " au BufWrite * :Autoformat
 let g:formatdef_clangformat_objc = '"clang-format -style=file"'
+
+""""""""""""""""""""""""""""""
+" => vim-preview
+""""""""""""""""""""""""""""""
+nmap <leader>v :Preview<CR>

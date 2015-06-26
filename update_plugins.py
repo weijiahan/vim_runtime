@@ -47,6 +47,7 @@ vim-autoformat https://github.com/Chiel92/vim-autoformat
 gruvbox https://github.com/morhetz/gruvbox
 vim-gitgutter https://github.com/airblade/vim-gitgutter
 vim-startify https://github.com/mhinz/vim-startify
+vim-preview https://github.com/greyblake/vim-preview
 """.strip()
 
 # taglist.vim https://github.com/vim-scripts/taglist.vim
