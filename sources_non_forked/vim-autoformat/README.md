@@ -9,7 +9,7 @@ When no formatprogram exists (or no formatprogram is installed) for a certain fi
 How to install
 -----------------------
 It is required that your vim has builtin python support. You can check whether this is the case
-by running `vim --version` and check that `+python` is listed among features.
+by running `vim --version` and check that `+python` or `+python3` is listed among features.
 
 ####Vundle
 Put this in your .vimrc
@@ -119,7 +119,7 @@ Here is the link to the repository: https://github.com/vvakame/typescript-format
 It is shipped with `sass`, a CSS preprocessor written in Ruby, which can be installed by running `gem install sass`.
 Here is the link to the SASS homepage: http://sass-lang.com/.
 
-* `tidy` for __XHTML__ and __XML__.
+* `tidy` for __HTML__, __XHTML__ and __XML__.
 It's probably in your distro's repository, so you can download it as a regular package.
 For Ubuntu type `sudo apt-get install tidy` in a terminal.
 
@@ -128,6 +128,10 @@ It is shipped with `ruby-beautify`, which can be installed by running `gem insta
 Note that compatible `ruby-beautify-0.94.0` or higher version.
 Here is the link to the repository: https://github.com/erniebrodeur/ruby-beautify.
 This beautifier developed and tested with ruby `2.0+`, so you can have weird results with earlier ruby versions.
+
+* `gofmt` for __Golang__.
+The default golang formatting program is shipped with the golang distribution. Make sure `gofmt` is in your PATH (if golang is installed properly, it should be).
+Here is the link to the installation: https://golang.org/doc/install
 
 How can I change the behaviour of formatters, or add one myself?
 ----------------------------------------------------------------

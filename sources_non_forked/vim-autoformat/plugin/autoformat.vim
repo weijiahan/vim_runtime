@@ -85,7 +85,20 @@ function! s:TryAllFormatters(...) range
         " Eval twice, once for getting definition content,
         " once for getting the final expression
         let &formatprg = eval(eval(formatdef_var))
-        if s:TryFormatter()
+
+        " Detect if +python or +python3 is available, and call the corresponding function
+        if !has("python") && !has("python3")
+            echohl WarningMsg |
+                \ echomsg "WARNING: vim has no support for python, but it is required to run the formatter!" |
+                \ echohl None
+            return 1
+        endif
+        if has("python")
+            let success = s:TryFormatterPython()
+        else
+            let success = s:TryFormatterPython3()
+        endif
+        if success
             return 1
         else
             let s:index = (s:index + 1) % len(b:formatters)
@@ -107,19 +120,11 @@ endfunction
 " Call formatter
 " If stderr is empty, apply result, return 1
 " Otherwise, return 0
-function! s:TryFormatter()
+
+" +python version
+function! s:TryFormatterPython()
     " Detect verbosity
     let verbose = &verbose || exists("g:autoformat_verbosemode")
-
-    if !has("python")
-        echohl WarningMsg |
-            \ echomsg "WARNING: vim has no support for python, but it is required to run the formatter!" |
-            \ echohl None
-        return 1
-    endif
-
-    " Save window state
-    let winview=winsaveview()
 
 python << EOF
 import vim, subprocess, os
@@ -145,15 +150,47 @@ else:
     vim.current.buffer[:] = stdoutdata.split('\n')
 EOF
 
-    " Recall window state
-    call winrestview(winview)
+    return 1
+endfunction
+
+" +python3 version
+function! s:TryFormatterPython3()
+    " Detect verbosity
+    let verbose = &verbose || exists("g:autoformat_verbosemode")
+
+python3 << EOF
+import vim, subprocess, os
+from subprocess import Popen, PIPE
+
+#text = '\n'.join(vim.current.buffer[:])
+text = bytes('\n'.join(vim.current.buffer[:]), 'utf-8')
+formatprg = vim.eval('&formatprg')
+verbose = bool(int(vim.eval('verbose')))
+env = os.environ.copy()
+if int(vim.eval('exists("g:formatterpath")')):
+    extra_path = vim.eval('g:formatterpath')
+    env['PATH'] = ':'.join(extra_path) + ':' + env['PATH']
+
+p = subprocess.Popen(formatprg, env=env, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+stdoutdata, stderrdata = p.communicate(text)
+if stderrdata:
+    if verbose:
+        formattername = vim.eval('b:formatters[s:index]')
+        print('Formatter {} has errors: {}. Skipping.'.format(formattername, stderrdata))
+        print('Failing config: {} '.format(repr(formatprg), stderrdata))
+    vim.command('return 0')
+else:
+    #vim.current.buffer[:] = stdoutdata.split('\n')
+    vim.current.buffer[:] = stdoutdata.split(b'\n')
+EOF
 
     return 1
 endfunction
 
 
 " Create a command for formatting the entire buffer
-command! -nargs=? -range=% -complete=filetype Autoformat <line1>,<line2>call s:TryAllFormatters(<f-args>)
+" Save and recall window state to prevent vim from jumping to line 1
+command! -nargs=? -range=% -complete=filetype Autoformat let winview=winsaveview()|<line1>,<line2>call s:TryAllFormatters(<f-args>)|call winrestview(winview)
 
 
 " Functions for iterating through list of available formatters

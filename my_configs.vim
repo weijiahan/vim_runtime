@@ -6,7 +6,7 @@ set cursorcolumn
 set number
 set pastetoggle=<F9>
 nnoremap <C-TAB> :tabnext<CR>
-nnoremap <C-S-TAB> :tabprev<CR>
+nnoremap <S-TAB> :tabprev<CR>
 noremap <F5> :make<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -233,10 +233,10 @@ nmap <leader>ma <Plug>MarkAllClear<CR>
 """"""""""""""""""""""""""""""
 " => vim-easymotion 
 """"""""""""""""""""""""""""""
-map  / <Plug>(easymotion-sn)
-omap / <Plug>(easymotion-tn)
-map  n <Plug>(easymotion-next)
-map  N <Plug>(easymotion-prev)
+" map  / <Plug>(easymotion-sn)
+" omap / <Plug>(easymotion-tn)
+" map  n <Plug>(easymotion-next)
+" map  N <Plug>(easymotion-prev)
 
 """"""""""""""""""""""""""""""
 " => ultisnips 
