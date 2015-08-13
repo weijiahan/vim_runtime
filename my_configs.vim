@@ -38,6 +38,9 @@ if has("multi_byte")
   endif
 endif
 
+" change file to sjis encoding 
+nnoremap <leader>sj :e! ++enc=sjis<CR>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -257,3 +260,4 @@ let g:formatdef_clangformat_objc = '"clang-format -style=file"'
 " => vim-preview
 """"""""""""""""""""""""""""""
 nmap <leader>v :Preview<CR>
+
