@@ -53,7 +53,7 @@ endif
 """"""""""""""""""""""""""""""
 let NERDChristmasTree=1
 let NERDTreeAutoCenter=1
-let NERDTreeBookmarksFile='/home/weijh/.nerdtree/NerdBookmarks.txt'
+let NERDTreeBookmarksFile='~/.vim_runtime/NerdBookmarks.txt'
 "let NERDTreeMouseMode=2
 let NERDTreeShowBookmarks=1
 let NERDTreeShowFiles=1
