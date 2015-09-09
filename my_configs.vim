@@ -38,22 +38,22 @@ if has("multi_byte")
   endif
 endif
 
-" change file to sjis encoding 
+" change file to sjis encoding
 nnoremap <leader>sj :e! ++enc=sjis<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if has("gui_running")
-    set guifont=Ubuntu\ Mono\ 12
-endif
+" if has("gui_running")
+"     set guifont=Monaco 14
+" endif
 
 """"""""""""""""""""""""""""""
 " => NERDTree
 """"""""""""""""""""""""""""""
 let NERDChristmasTree=1
 let NERDTreeAutoCenter=1
-let NERDTreeBookmarksFile='~/.vim_runtime/NerdBookmarks.txt'
+let NERDTreeBookmarksFile='/Users/weijh/.vim_runtime/NerdBookmarks.txt'
 "let NERDTreeMouseMode=2
 let NERDTreeShowBookmarks=1
 let NERDTreeShowFiles=1
@@ -218,14 +218,14 @@ nmap <F4> :YcmDiags<CR>
 
 
 """"""""""""""""""""""""""""""
-" => WM Graphviz 
+" => WM Graphviz
 """"""""""""""""""""""""""""""
 let g:WMGraphviz_output = "png"
 nnoremap <leader>ll :GraphvizCompile<CR>
 nnoremap <leader>lv :GraphvizShow<CR>
 
 """"""""""""""""""""""""""""""
-" => Mark.vim 
+" => Mark.vim
 """"""""""""""""""""""""""""""
 nmap <leader>mm <Plug>MarkSet<CR>
 nmap <leader>mr <Plug>MarkRegex<CR>
@@ -234,7 +234,7 @@ nmap <leader>mc <Plug>MarkClear<CR>
 nmap <leader>ma <Plug>MarkAllClear<CR>
 
 """"""""""""""""""""""""""""""
-" => vim-easymotion 
+" => vim-easymotion
 """"""""""""""""""""""""""""""
 " map  / <Plug>(easymotion-sn)
 " omap / <Plug>(easymotion-tn)
@@ -242,7 +242,7 @@ nmap <leader>ma <Plug>MarkAllClear<CR>
 " map  N <Plug>(easymotion-prev)
 
 """"""""""""""""""""""""""""""
-" => ultisnips 
+" => ultisnips
 """"""""""""""""""""""""""""""
 let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
@@ -260,4 +260,3 @@ let g:formatdef_clangformat_objc = '"clang-format -style=file"'
 " => vim-preview
 """"""""""""""""""""""""""""""
 nmap <leader>v :Preview<CR>
-

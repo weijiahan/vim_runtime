@@ -48,6 +48,7 @@ gruvbox https://github.com/morhetz/gruvbox
 vim-gitgutter https://github.com/airblade/vim-gitgutter
 vim-startify https://github.com/mhinz/vim-startify
 vim-preview https://github.com/greyblake/vim-preview
+dash.vim https://github.com/rizzatti/dash.vim
 """.strip()
 
 # taglist.vim https://github.com/vim-scripts/taglist.vim
