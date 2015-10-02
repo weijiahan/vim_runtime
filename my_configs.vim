@@ -260,3 +260,8 @@ let g:formatdef_clangformat_objc = '"clang-format -style=file"'
 " => vim-preview
 """"""""""""""""""""""""""""""
 nmap <leader>v :Preview<CR>
+
+""""""""""""""""""""""""""""""
+" => Dash
+""""""""""""""""""""""""""""""
+:nmap <silent> <leader>d <Plug>DashSearch

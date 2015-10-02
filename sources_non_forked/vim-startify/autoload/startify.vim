@@ -235,27 +235,31 @@ endfunction
 
 " Function: #session_write {{{1
 function! startify#session_write(spath)
-  let ssop = &sessionoptions
-  try
-    " if this function is called while being in the Startify buffer
-    " (by loading another session or running :SSave/:SLoad directly)
-    " switch back to the previous buffer before saving the session
-    if &filetype == 'startify'
-      let callingbuffer = bufnr('#')
-      if callingbuffer > 0
-        execute 'buffer' callingbuffer
-      endif
+  " if this function is called while being in the Startify buffer
+  " (by loading another session or running :SSave/:SLoad directly)
+  " switch back to the previous buffer before saving the session
+  if &filetype == 'startify'
+    let callingbuffer = bufnr('#')
+    if callingbuffer > 0
+      execute 'buffer' callingbuffer
     endif
-    " prevent saving already deleted buffers that were in the arglist
-    for arg in argv()
-      if !buflisted(arg)
-        execute 'argdelete' fnameescape(arg)
-      endif
-    endfor
-    set sessionoptions-=options
+  endif
+  " prevent saving already deleted buffers that were in the arglist
+  for arg in argv()
+    if !buflisted(arg)
+      execute 'silent! argdelete' fnameescape(arg)
+    endif
+  endfor
+
+  let ssop = &sessionoptions
+  set sessionoptions-=options
+  try
     execute 'mksession!' a:spath
   catch
-    execute 'echoerr' string(v:exception)
+    echohl ErrorMsg
+    echomsg v:exception
+    echohl NONE
+    return
   finally
     let &sessionoptions = ssop
   endtry
@@ -370,6 +374,8 @@ function! startify#open_buffers(...) abort
   for entry in sort(values(marked), 's:sort_by_tick')
     call s:open_buffer(entry)
   endfor
+
+  wincmd =
 endfunction
 
 " Function: s:open_buffer {{{1
@@ -382,6 +388,9 @@ function! s:open_buffer(entry)
     if line2byte('$') == -1
       execute 'edit' a:entry.path
     else
+      if a:entry.cmd == 'tabnew'
+        wincmd =
+      endif
       execute a:entry.cmd a:entry.path
     endif
     call s:check_user_options()
