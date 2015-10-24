@@ -9,6 +9,7 @@ nnoremap <C-TAB> :tabnext<CR>
 nnoremap <S-TAB> :tabprev<CR>
 noremap <F5> :make<CR>
 
+set linespace=6
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Language
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
