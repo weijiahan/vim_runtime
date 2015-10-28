@@ -42,26 +42,17 @@ endif
 " change file to sjis encoding
 nnoremap <leader>sj :e! ++enc=sjis<CR>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Colors and Fonts
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" if has("gui_running")
-"     set guifont=Monaco 14
-" endif
-
 """"""""""""""""""""""""""""""
 " => NERDTree
 """"""""""""""""""""""""""""""
 let NERDChristmasTree=1
-let NERDTreeAutoCenter=1
-let NERDTreeBookmarksFile='/Users/weijh/.vim_runtime/NerdBookmarks.txt'
-"let NERDTreeMouseMode=2
+"let NERDTreeAutoCenter=1
 let NERDTreeShowBookmarks=1
-let NERDTreeShowFiles=1
+"let NERDTreeShowFiles=1
 let NERDTreeShowHidden=1
-let NERDTreeShowLineNumbers=0
+"let NERDTreeShowLineNumbers=0
 let NERDTreeWinPos='left'
-let NERDTreeWinSize=40
+"let NERDTreeWinSize=40
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 """"""""""""""""""""""""""""""
@@ -263,6 +254,11 @@ let g:formatdef_clangformat_objc = '"clang-format -style=file"'
 nmap <leader>v :Preview<CR>
 
 """"""""""""""""""""""""""""""
-" => Dash
+" => Dash or Zeal
 """"""""""""""""""""""""""""""
-:nmap <silent> <leader>d <Plug>DashSearch
+if has("mac") || has("macunix")
+    :nmap <silent> <leader>d <Plug>DashSearch
+elseif has("unix")
+    let g:investigate_command_for_python = '/usr/bin/zeal --query ^s'
+    :nmap <silent> <leader>d :!zeal --query "<cword>"&<CR><CR>
+endif

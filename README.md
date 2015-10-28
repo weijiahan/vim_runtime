@@ -1,75 +1,36 @@
-根据amix的vim配置文件修改，具体修改内容待整理。
+# 说明
 
-sudo apt-get install exuberant-ctags
+本Vim配置文件是在[amix的配置文件](https://github.com/amix/vimrc)内容的基础上进行的修改，添加了一些符合我自己工作的习惯。
 
-sudo apt-get install ack-grep
+我主要是使用C、C++、Go等语言进行后台程序的开发，其他语言主要是进行一些修改工作。
 
-sudo apt-get install ruby-redcarpet
+## 依赖
 
-安装gotags
+下面是配置中需要依赖的一些其他外部资源。
 
-安装YouCompleteMe
+|插件|依赖组件|
+|-----|-----|
+|tagbar|exuberant-ctags|
+|ack.vim|ack-grep|
+|vim-preview|ruby-redcarpet|
+|vim-go|gotags|
 
-# The Ultimate vimrc
+## 安装
 
-Over the last 8 years I have used and tweaked Vim. This is my Ultimate vimrc.
+	sh ~/.vim_runtime/install_vimrc.sh
 
-There are two versions:
+## 字体
 
-* **Basic**: If you want something small just copy [basic.vim](https://github.com/amix/vimrc/blob/master/vimrcs/basic.vim) into your ~/.vimrc and you will have a great basic setup
-* **Awesome**: This includes a ton of useful plugins, color schemes and configurations
+个人比较偏爱[Ubuntu Mono](http://font.ubuntu.com)字体，该字体完全免费，编程看来挺舒适。
 
-I would of course recommend using the awesome version.
+## 关于Windows
 
-## How to install the Awesome version?
-The awesome version includes a lot of great plugins, configurations and color schemes that make Vim a lot better. To install it simply do following:
+该配置文件理论上可以再Windows下使用，但没有经过测试，如需要请自己调试。
 
-	git clone git://github.com/amix/vimrc.git ~/.vim_runtime
-	sh ~/.vim_runtime/install_awesome_vimrc.sh
-
-The taglist.vim plugin will require ctags (http://ctags.sourceforge.net) (Debian: apt-get install ctags)
-
-I also recommend using [Source Code Pro font from Adobe](http://store1.adobe.com/cfusion/store/html/index.cfm?event=displayFontPackage&code=1960) (it's free and awesome font for writing and programming). The Awesome vimrc is already setup to try to use it
-
-## How to install the Basic version?
-The basic version is basically just one file and no plugins. You can check out [basic.vim](https://github.com/amix/vimrc/blob/master/vimrcs/basic.vim).
-
-This is useful to install on remote servers where you don't need many plugins and you don't do many edits.
-
-	git clone git://github.com/amix/vimrc.git ~/.vim_runtime
-	sh ~/.vim_runtime/install_basic_vimrc.sh
-
-
-## How to install on Windows?
-
-Use [msysgit](http://msysgit.github.com/) to checkout the repository and run the installation instructions above. No special instructions needed ;-)
-
-
-## How to update to latest version?
-
-Simply just do a git rebase!
+## 升级
 
     cd ~/.vim_runtime
     git pull --rebase
-
-
-## Some screenshots
-
-Colors when editing a Python file:
-![Screenshot 1](http://files1.wedoist.com/e952fdb343b1e617b90d256e474d0370/as/screenshot_1.png)
-
-Opening recently opened files [mru.vim](https://github.com/vim-scripts/mru.vim):
-![Screenshot 2](http://files1.wedoist.com/1967b0e48af40e513d1a464e08196990/as/screenshot_2.png)
-
-[NERD Tree](https://github.com/scrooloose/nerdtree) plugin in a terminal window:
-![Screenshot 3](http://files1.wedoist.com/b1509d7ed9e9f357e8d04797f9fad67b/as/screenshot3.png)
-
-This vimrc even works on Windows!
-![Screenshot 4](http://files1.wedoist.com/4e85163d97b81422240c822c82022f2f/as/screenshot_4.png)
-
-Distraction free mode using [goyo.vim](https://github.com/junegunn/goyo.vim) and [vim-zenroom2](https://github.com/amix/vim-zenroom2):
-![Screenshot 5](https://d2dq6e731uoz0t.cloudfront.net/a5182977c3d6c2a6cd3f9e97398ca8ca/as/zen_mode.jpg)
-
 
 ## Included Plugins
 
