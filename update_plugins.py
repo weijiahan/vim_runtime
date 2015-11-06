@@ -49,6 +49,8 @@ vim-gitgutter https://github.com/airblade/vim-gitgutter
 vim-startify https://github.com/mhinz/vim-startify
 vim-preview https://github.com/greyblake/vim-preview
 dash.vim https://github.com/rizzatti/dash.vim
+molokai https://github.com/tomasr/molokai
+corporation https://github.com/vim-scripts/corporation
 """.strip()
 
 # taglist.vim https://github.com/vim-scripts/taglist.vim
