@@ -262,3 +262,9 @@ elseif has("unix")
     let g:investigate_command_for_python = '/usr/bin/zeal --query ^s'
     :nmap <silent> <leader>d :!zeal --query "<cword>"&<CR><CR>
 endif
+
+""""""""""""""""""""""""""""""
+" => vim-commentary 
+""""""""""""""""""""""""""""""
+autocmd FileType apache setlocal commentstring=#\ %s
+autocmd FileType cmake setlocal commentstring=#\ %s
