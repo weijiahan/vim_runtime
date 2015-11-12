@@ -197,7 +197,7 @@ let g:tagbar_type_objc = {
 """"""""""""""""""""""""""""""
 "nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 "nnoremap <F6> :YcmForceCompileAndDiagnostics<CR>
-let g:ycm_global_ycm_extra_conf = '~/ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 "Do not ask when starting vim
 let g:ycm_confirm_extra_conf = 0
 let g:syntastic_always_populate_loc_list = 1
@@ -239,7 +239,6 @@ nmap <leader>ma <Plug>MarkAllClear<CR>
 let g:UltiSnipsExpandTrigger="<c-j>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
 
 """"""""""""""""""""""""""""""
 " => vim-autoformat
