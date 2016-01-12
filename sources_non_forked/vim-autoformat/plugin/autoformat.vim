@@ -1,8 +1,13 @@
 " Function for finding the formatters for this filetype
 " Result is stored in b:formatters
+
+if !exists('g:autoformat_autoindent')
+    let g:autoformat_autoindent = 1
+endif
+
 function! s:find_formatters(...)
     " Detect verbosity
-    let verbose = &verbose || exists("g:autoformat_verbosemode")
+    let verbose = &verbose || g:autoformat_verbosemode == 1
 
     " Extract filetype to be used
     let ftype = a:0 ? a:1 : &filetype
@@ -60,8 +65,11 @@ endfunction
 function! s:TryAllFormatters(...) range
     " Make sure formatters are defined and detected
     if !call('<SID>find_formatters', a:000)
-        " No formatters defined, so autoindent code
-        exe "normal gg=G"
+        " No formatters defined
+        if g:autoformat_autoindent == 1
+            " Autoindent code
+            exe "normal gg=G"
+        endif
         return 0
     endif
 
@@ -107,8 +115,11 @@ function! s:TryAllFormatters(...) range
         endif
 
         if s:index == b:current_formatter_index
-            " Tried all formatters, none worked so autoindent code
-            exe "normal gg=G"
+            " Tried all formatters, none worked
+            if g:autoformat_autoindent == 1
+                " Autoindent code
+                exe "normal gg=G"
+            endif
             return 0
         endif
     endwhile
@@ -123,13 +134,13 @@ endfunction
 " +python version
 function! s:TryFormatterPython()
     " Detect verbosity
-    let verbose = &verbose || exists("g:autoformat_verbosemode")
+    let verbose = &verbose || g:autoformat_verbosemode == 1
 
 python << EOF
 import vim, subprocess, os
 from subprocess import Popen, PIPE
 
-text = os.linesep.join(vim.current.buffer[:])
+text = os.linesep.join(vim.current.buffer[:]) + os.linesep
 formatprg = vim.eval('&formatprg')
 verbose = bool(int(vim.eval('verbose')))
 env = os.environ.copy()
@@ -146,13 +157,23 @@ if stderrdata:
         print('Failing config: {} '.format(repr(formatprg), stderrdata))
     vim.command('return 0')
 else:
+    # It is not certain what kind of line endings are being used by the format program.
+    # Therefore we simply split on all possible eol characters.
+    possible_eols = ['\r\n', os.linesep, '\r', '\n']
+
     # Often shell commands will append a newline at the end of their output.
     # It is not entirely clear when and why that happens.
     # However, extra newlines are almost never required, while there are linters that complain
     # about superfluous newlines, so we remove one empty newline at the end of the file.
-    if stdoutdata[-1] == os.linesep:
-        stdoutdata = stdoutdata[:-1]
-    vim.current.buffer[:] = stdoutdata.split(os.linesep)
+    for eol in possible_eols:
+        if stdoutdata[-1] == eol:
+            stdoutdata = stdoutdata[:-1]
+
+    lines = [stdoutdata]
+    for eol in possible_eols:
+        lines = [splitline for line in lines for splitline in line.split(eol)]
+
+    vim.current.buffer[:] = lines
 EOF
 
     return 1
@@ -161,13 +182,13 @@ endfunction
 " +python3 version
 function! s:TryFormatterPython3()
     " Detect verbosity
-    let verbose = &verbose || exists("g:autoformat_verbosemode")
+    let verbose = &verbose || g:autoformat_verbosemode == 1
 
 python3 << EOF
 import vim, subprocess, os
 from subprocess import Popen, PIPE
 
-text = bytes(os.linesep.join(vim.current.buffer[:]), 'utf-8')
+text = bytes(os.linesep.join(vim.current.buffer[:]) + os.linesep, 'utf-8')
 formatprg = vim.eval('&formatprg')
 verbose = bool(int(vim.eval('verbose')))
 env = os.environ.copy()
@@ -184,13 +205,25 @@ if stderrdata:
         print('Failing config: {} '.format(repr(formatprg), stderrdata))
     vim.command('return 0')
 else:
+    # It is not certain what kind of line endings are being used by the format program.
+    # Therefore we simply split on all possible eol characters.
+    possible_eols = ['\r\n', os.linesep, '\r', '\n']
+
+    stdoutdata = stdoutdata.decode('utf-8')
+
     # Often shell commands will append a newline at the end of their output.
     # It is not entirely clear when and why that happens.
     # However, extra newlines are almost never required, while there are linters that complain
     # about superfluous newlines, so we remove one empty newline at the end of the file.
-    if stdoutdata[-1] == os.linesep:
-        stdoutdata = stdoutdata[:-1]
-    vim.current.buffer[:] = stdoutdata.split(os.linesep)
+    for eol in possible_eols:
+        if stdoutdata[-1] == eol:
+            stdoutdata = stdoutdata[:-1]
+
+    lines = [stdoutdata]
+    for eol in possible_eols:
+        lines = [splitline for line in lines for splitline in line.split(eol)]
+
+    vim.current.buffer[:] = lines
 EOF
 
     return 1
