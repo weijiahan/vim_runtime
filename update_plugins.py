@@ -51,6 +51,7 @@ vim-preview https://github.com/greyblake/vim-preview
 dash.vim https://github.com/rizzatti/dash.vim
 molokai https://github.com/tomasr/molokai
 corporation https://github.com/vim-scripts/corporation
+nerdtree-git-plugin https://github.com/Xuyuanp/nerdtree-git-plugin
 """.strip()
 
 # taglist.vim https://github.com/vim-scripts/taglist.vim
