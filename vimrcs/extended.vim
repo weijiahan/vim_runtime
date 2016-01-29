@@ -10,7 +10,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set font according to system
 if has("mac") || has("macunix")
-    set gfn=Ubuntu\ Mono:h16
+    set gfn=Source\ Code\ Pro:h14
 elseif has("win16") || has("win32")
     set gfn=Ubuntu\ Mono:h16
 elseif has("unix")

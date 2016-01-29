@@ -9,7 +9,7 @@ nnoremap <C-TAB> :tabnext<CR>
 nnoremap <S-TAB> :tabprev<CR>
 noremap <F5> :make<CR>
 
-set linespace=6
+set linespace=1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Language
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -295,3 +295,9 @@ au FileType go nmap <Leader>i <Plug>(go-info)
 au FileType go nmap <leader>yg :GoDef<CR>
 au FileType go nmap <leader>yf :GoReferrers<CR>
 au FileType go nmap <Leader>er <Plug>(go-rename)
+
+
+""""""""""""""""""""""""""""""
+" => vim-gitgutter
+""""""""""""""""""""""""""""""
+let g:gitgutter_max_signs = 5000
