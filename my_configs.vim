@@ -45,15 +45,9 @@ nnoremap <leader>sj :e! ++enc=sjis<CR>
 """"""""""""""""""""""""""""""
 " => NERDTree
 """"""""""""""""""""""""""""""
-let NERDChristmasTree=1
-"let NERDTreeAutoCenter=1
-let NERDTreeShowBookmarks=1
-"let NERDTreeShowFiles=1
-let NERDTreeShowHidden=1
-"let NERDTreeShowLineNumbers=0
-let NERDTreeWinPos='left'
-"let NERDTreeWinSize=40
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 """"""""""""""""""""""""""""""
 " => RainbowParentheses
