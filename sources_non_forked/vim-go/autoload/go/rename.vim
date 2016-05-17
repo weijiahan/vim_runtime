@@ -31,17 +31,26 @@ function! go#rename#Rename(bang, ...)
     endif
 
     let fname = expand('%:p')
-    let pos = s:getpos(line('.'), col('.'))
+    let pos = go#util#OffsetCursor()
     let cmd = printf('%s -offset %s -to %s', shellescape(bin_path), shellescape(printf('%s:#%d', fname, pos)), shellescape(to))
 
     let out = go#tool#ExecuteInDir(cmd)
+
+    " reload all files to reflect the new changes. We explicitly call
+    " checktime to trigger a reload of all files. See
+    " http://www.mail-archive.com/vim@vim.org/msg05900.html for more info
+    " about the autoread bug
+    let current_autoread = &autoread
+    set autoread
+    silent! checktime
+    let &autoread = current_autoread
 
     " strip out newline on the end that gorename puts. If we don't remove, it
     " will trigger the 'Hit ENTER to continue' prompt
     let clean = split(out, '\n')
 
     let l:listtype = "quickfix"
-    if v:shell_error
+    if go#util#ShellError() != 0
         let errors = go#tool#ParseErrors(split(out, '\n'))
         call go#list#Populate(l:listtype, errors)
         call go#list#Window(l:listtype, len(errors))
@@ -64,15 +73,6 @@ function! go#rename#Rename(bang, ...)
     " change.
     silent execute ":e"
 endfunction
-
-func! s:getpos(l, c)
-    if &encoding != 'utf-8'
-        let buf = a:l == 1 ? '' : (join(getline(1, a:l-1), "\n") . "\n")
-        let buf .= a:c == 1 ? '' : getline('.')[:a:c-2]
-        return len(iconv(buf, &encoding, 'utf-8'))
-    endif
-    return line2byte(a:l) + (a:c-2)
-endfun
 
 " vim:ts=4:sw=4:et
 "

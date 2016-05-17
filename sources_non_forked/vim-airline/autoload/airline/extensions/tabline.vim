@@ -42,6 +42,9 @@ function! s:toggle_on()
 endfunction
 
 function! s:update_tabline()
+  if get(g:, 'airline#extensions#tabline#disable_refresh', 0)
+    return
+  endif
   let match = expand('<afile>')
   if pumvisible()
     return
@@ -53,11 +56,7 @@ function! s:update_tabline()
         \ || isdirectory(expand("<afile>"))
     return
   endif
-  if empty(mapcheck("<Plug>AirlineTablineRefresh", 'n'))
-    noremap <silent> <Plug>AirlineTablineRefresh :set mod!<cr>
-  endif
-  call feedkeys("\<Plug>AirlineTablineRefresh")
-  call feedkeys("\<Plug>AirlineTablineRefresh")
+  doautocmd User BufMRUChange
 endfunction
 
 function! airline#extensions#tabline#load_theme(palette)
@@ -132,6 +131,10 @@ function! airline#extensions#tabline#title(n)
     let title = TabooTabTitle(a:n)
   endif
 
+  if empty(title) && exists('*gettabvar')
+    let title = gettabvar(a:n, 'title')
+  endif
+
   if empty(title)
     let buflist = tabpagebuflist(a:n)
     let winnr = tabpagewinnr(a:n)
@@ -170,7 +173,6 @@ function! airline#extensions#tabline#group_of_bufnr(tab_bufs, bufnr)
     else
       let group = 'airline_tabsel'
     endif
-    let s:current_modified = (group == 'airline_tabmod') ? 1 : 0
   else
     if g:airline_detect_modified && getbufvar(a:bufnr, '&modified')
       let group = 'airline_tabmod_unsel'

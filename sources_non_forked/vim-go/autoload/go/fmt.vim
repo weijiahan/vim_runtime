@@ -52,13 +52,25 @@ endif
 "  this and have VimL experience, please look at the function for
 "  improvements, patches are welcome :)
 function! go#fmt#Format(withGoimport)
-    " save cursor position, folds and many other things
-    let l:curw = {}
-    try
-        mkview!
-    catch
-        let l:curw=winsaveview()
-    endtry
+    if g:go_fmt_experimental == 1
+        " Using winsaveview to save/restore cursor state has the problem of
+        " closing folds on save:
+        "   https://github.com/fatih/vim-go/issues/502
+        " One fix is to use mkview instead. Unfortunately, this sometimes causes
+        " other bad side effects:
+        "   https://github.com/fatih/vim-go/issues/728
+        " and still closes all folds if foldlevel>0:
+        "   https://github.com/fatih/vim-go/issues/732
+        let l:curw = {}
+        try
+            mkview!
+        catch
+            let l:curw = winsaveview()
+        endtry
+    else
+        " Save cursor position and many other things.
+        let l:curw = winsaveview()
+    endif
 
     " Write current unsaved buffer to a temp file
     let l:tmpname = tempname()
@@ -69,7 +81,7 @@ function! go#fmt#Format(withGoimport)
         " prevent an additional undo jump due to BufWritePre auto command and also
         " restore 'redo' history because it's getting being destroyed every
         " BufWritePre
-        let tmpundofile=tempname()
+        let tmpundofile = tempname()
         exe 'wundo! ' . tmpundofile
     endif
 
@@ -101,8 +113,32 @@ function! go#fmt#Format(withGoimport)
         let command  = command . g:go_fmt_options
     endif
 
+    if fmt_command == "goimports"
+        if !exists('b:goimports_vendor_compatible')
+            let out = go#util#System("goimports --help")
+            if out !~ "-srcdir"
+                echohl WarningMsg
+                echomsg "vim-go: goimports does not support srcdir."
+                echomsg "  update with: :GoUpdateBinaries"
+                echohl None
+            else
+               let b:goimports_vendor_compatible = 1
+            endif
+        endif
+
+        if exists('b:goimports_vendor_compatible') && b:goimports_vendor_compatible
+            let ssl_save = &shellslash
+            set noshellslash
+            let command  = command . '-srcdir ' . shellescape(expand("%:p:h"))
+            let &shellslash = ssl_save
+        endif
+    endif
+
     " execute our command...
-    let out = system(command . " " . l:tmpname)
+    if go#util#IsWin()
+        let l:tmpname = tr(l:tmpname, '\', '/')
+    endif
+    let out = go#util#System(command . " " . l:tmpname)
 
     if fmt_command != "gofmt"
         let $GOPATH = old_gopath
@@ -112,7 +148,7 @@ function! go#fmt#Format(withGoimport)
     "if there is no error on the temp file replace the output with the current
     "file (if this fails, we can always check the outputs first line with:
     "splitted =~ 'package \w\+')
-    if v:shell_error == 0
+    if go#util#ShellError() == 0
         " remove undo point caused via BufWritePre
         try | silent undojoin | catch | endtry
 
@@ -163,10 +199,15 @@ function! go#fmt#Format(withGoimport)
         call delete(tmpundofile)
     endif
 
-    " restore our cursor/windows positions, folds, etc..
-    if empty(l:curw)
-        silent! loadview
+    if g:go_fmt_experimental == 1
+        " Restore our cursor/windows positions, folds, etc.
+        if empty(l:curw)
+            silent! loadview
+        else
+            call winrestview(l:curw)
+        endif
     else
+        " Restore our cursor/windows positions.
         call winrestview(l:curw)
     endif
 endfunction

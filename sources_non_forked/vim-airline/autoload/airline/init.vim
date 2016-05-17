@@ -22,6 +22,7 @@ function! airline#init#bootstrap()
   call s:check_defined('g:airline_detect_modified', 1)
   call s:check_defined('g:airline_detect_paste', 1)
   call s:check_defined('g:airline_detect_crypt', 1)
+  call s:check_defined('g:airline_detect_spell', 1)
   call s:check_defined('g:airline_detect_iminsert', 0)
   call s:check_defined('g:airline_inactive_collapse', 1)
   call s:check_defined('g:airline_exclude_filenames', ['DebuggerWatch','DebuggerStack','DebuggerStatus'])
@@ -47,21 +48,22 @@ function! airline#init#bootstrap()
 
   call s:check_defined('g:airline_theme_map', {})
   call extend(g:airline_theme_map, {
-        \ 'Tomorrow.*': 'tomorrow',
-        \ 'base16.*': 'base16',
-        \ 'bubblegum': 'bubblegum',
+        \ '\CTomorrow': 'tomorrow',
+        \ 'base16': 'base16',
         \ 'mo[l|n]okai': 'molokai',
-        \ 'wombat.*': 'wombat',
-        \ '.*zenburn.*': 'zenburn',
-        \ '.*solarized.*': 'solarized',
+        \ 'wombat': 'wombat',
+        \ 'zenburn': 'zenburn',
+        \ 'solarized': 'solarized',
         \ }, 'keep')
 
   call s:check_defined('g:airline_symbols', {})
   call extend(g:airline_symbols, {
         \ 'paste': 'PASTE',
+        \ 'spell': 'SPELL',
         \ 'readonly': get(g:, 'airline_powerline_fonts', 0) ? "\ue0a2" : 'RO',
         \ 'whitespace': get(g:, 'airline_powerline_fonts', 0) ? "\u2739" : '!',
         \ 'linenr': get(g:, 'airline_powerline_fonts', 0) ? "\ue0a1" : ':',
+        \ 'maxlinenr': get(g:, 'airline_powerline_fonts', 0) ? "\u2630" : '',
         \ 'branch': get(g:, 'airline_powerline_fonts', 0) ? "\ue0a0" : '',
         \ 'notexists': "\u2204",
         \ 'modified': '+',
@@ -76,6 +78,7 @@ function! airline#init#bootstrap()
   call airline#parts#define_function('iminsert', 'airline#parts#iminsert')
   call airline#parts#define_function('paste', 'airline#parts#paste')
   call airline#parts#define_function('crypt', 'airline#parts#crypt')
+  call airline#parts#define_function('spell', 'airline#parts#spell')
   call airline#parts#define_function('filetype', 'airline#parts#filetype')
   call airline#parts#define('readonly', {
         \ 'function': 'airline#parts#readonly',
@@ -86,6 +89,9 @@ function! airline#init#bootstrap()
   call airline#parts#define('linenr', {
         \ 'raw': '%{g:airline_symbols.linenr}%#__accent_bold#%4l%#__restore__#',
         \ 'accent': 'bold'})
+  call airline#parts#define('maxlinenr', {
+        \ 'raw': '%#__accent_bold#/%L%{g:airline_symbols.maxlinenr}%#__restore__#',
+        \ 'accent': 'bold'})
   call airline#parts#define_function('ffenc', 'airline#parts#ffenc')
   call airline#parts#define_empty(['hunks', 'branch', 'tagbar', 'syntastic',
         \ 'eclim', 'whitespace','windowswap', 'ycm_error_count', 'ycm_warning_count'])
@@ -95,15 +101,15 @@ function! airline#init#bootstrap()
 endfunction
 
 function! airline#init#gui_mode()
-  return ((has('nvim') && exists('$NVIM_TUI_ENABLE_TRUE_COLOR'))
-        \ || has('gui_running') || (has("termtruecolor") && &guicolors == 1)) ?
+  return ((has('nvim') && exists('$NVIM_TUI_ENABLE_TRUE_COLOR') && !exists("+termguicolors"))
+        \ || has('gui_running') || (has("termtruecolor") && &guicolors == 1) || (has("termguicolors") && &termguicolors == 1)) ?
         \ 'gui' : 'cterm'
 endfunction
 
 function! airline#init#sections()
   let spc = g:airline_symbols.space
   if !exists('g:airline_section_a')
-    let g:airline_section_a = airline#section#create_left(['mode', 'crypt', 'paste', 'capslock', 'iminsert'])
+    let g:airline_section_a = airline#section#create_left(['mode', 'crypt', 'paste', 'spell', 'capslock', 'iminsert'])
   endif
   if !exists('g:airline_section_b')
     let g:airline_section_b = airline#section#create(['hunks', 'branch'])
@@ -125,7 +131,7 @@ function! airline#init#sections()
     let g:airline_section_y = airline#section#create_right(['ffenc'])
   endif
   if !exists('g:airline_section_z')
-    let g:airline_section_z = airline#section#create(['windowswap', '%3p%%'.spc, 'linenr', ':%3v '])
+    let g:airline_section_z = airline#section#create(['windowswap', '%3p%%'.spc, 'linenr', 'maxlinenr', spc.':%3v'])
   endif
   if !exists('g:airline_section_error')
     let g:airline_section_error = airline#section#create(['ycm_error_count', 'syntastic', 'eclim'])

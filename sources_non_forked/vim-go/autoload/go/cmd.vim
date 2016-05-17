@@ -74,8 +74,12 @@ endfunction
 
 
 " Run runs the current file (and their dependencies if any) in a new terminal.
-function! go#cmd#RunTerm(bang, mode)
-    let cmd = "go run ".  go#util#Shelljoin(go#tool#Files())
+function! go#cmd#RunTerm(bang, mode, files)
+    if empty(a:files)
+        let cmd = "go run ".  go#util#Shelljoin(go#tool#Files())
+    else
+        let cmd = "go run ".  go#util#Shelljoin(map(copy(a:files), "expand(v:val)"), 1)
+    endif
     call go#term#newmode(a:bang, cmd, a:mode)
 endfunction
 
@@ -85,7 +89,7 @@ endfunction
 " calling long running apps will block the whole UI.
 function! go#cmd#Run(bang, ...)
     if has('nvim')
-        call go#cmd#RunTerm(a:bang, '')
+        call go#cmd#RunTerm(a:bang, '', a:000)
         return
     endif
 
@@ -117,9 +121,9 @@ function! go#cmd#Run(bang, ...)
     if g:go_dispatch_enabled && exists(':Make') == 2
         silent! exe 'Make'
     elseif l:listtype == "locationlist"
-        silent! exe 'lmake!'
+        exe 'lmake!'
     else
-        silent! exe 'make!'
+        exe 'make!'
     endif
 
     let items = go#list#Get(l:listtype)
@@ -209,11 +213,11 @@ function! go#cmd#Test(bang, compile, ...)
 
     if has('nvim')
         if get(g:, 'go_term_enabled', 0)
-            call go#term#new(a:bang, ["go"] + args)
+            let id = go#term#new(a:bang, ["go"] + args)
         else
-            call go#jobcontrol#Spawn(a:bang, "test", args)
+            let id = go#jobcontrol#Spawn(a:bang, "test", args)
         endif
-        return
+        return id
     endif
 
     call go#cmd#autowrite()
@@ -225,7 +229,7 @@ function! go#cmd#Test(bang, compile, ...)
 
     let l:listtype = "quickfix"
 
-    if v:shell_error
+    if go#util#ShellError() != 0
         let cd = exists('*haslocaldir') && haslocaldir() ? 'lcd ' : 'cd '
         let dir = getcwd()
         try
@@ -268,7 +272,7 @@ function! go#cmd#TestFunc(bang, ...)
     "
     " for the full list
     " :help search
-    let test = search("func Test", "bcnW")
+    let test = search('func \(Test\|Example\)', "bcnW")
 
     if test == 0
         echo "vim-go: [test] no test found immediate to cursor"
@@ -286,36 +290,6 @@ function! go#cmd#TestFunc(bang, ...)
     call call('go#cmd#Test', args)
 endfunction
 
-" Coverage creates a new cover profile with 'go test -coverprofile' and opens
-" a new HTML coverage page from that profile.
-function! go#cmd#Coverage(bang, ...)
-    let l:tmpname=tempname()
-
-    let command = "go test -coverprofile=" . l:tmpname . ' ' . go#util#Shelljoin(a:000)
-
-
-    let l:listtype = "quickfix"
-    call go#cmd#autowrite()
-    let out = go#tool#ExecuteInDir(command)
-    if v:shell_error
-        let errors = go#tool#ParseErrors(split(out, '\n'))
-        call go#list#Populate(l:listtype, errors)
-        call go#list#Window(l:listtype, len(errors))
-        if !empty(errors) && !a:bang
-            call go#list#JumpToFirst(l:listtype)
-        endif
-    else
-        " clear previous location list 
-        call go#list#Clean(l:listtype)
-        call go#list#Window(l:listtype)
-
-        let openHTML = 'go tool cover -html='.l:tmpname
-        call go#tool#ExecuteInDir(openHTML)
-    endif
-
-    call delete(l:tmpname)
-endfunction
-
 " Generate runs 'go generate' in similar fashion to go#cmd#Build()
 function! go#cmd#Generate(bang, ...)
     let default_makeprg = &makeprg
@@ -325,7 +299,7 @@ function! go#cmd#Generate(bang, ...)
 
     " :make expands '%' and '#' wildcards, so they must also be escaped
     let goargs = go#util#Shelljoin(map(copy(a:000), "expand(v:val)"), 1)
-    if v:shell_error
+    if go#util#ShellError() != 0
         let &makeprg = "go generate " . goargs
     else
         let gofiles = go#util#Shelljoin(go#tool#Files(), 1)
