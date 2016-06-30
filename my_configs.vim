@@ -296,3 +296,12 @@ au FileType go nmap <Leader>er <Plug>(go-rename)
 " => vim-gitgutter
 """"""""""""""""""""""""""""""
 let g:gitgutter_max_signs = 5000
+
+
+""""""""""""""""""""""""""""""
+" => vim-diff
+""""""""""""""""""""""""""""""
+map <silent> <leader>1 :diffget 1<CR> :diffupdate<CR>
+map <silent> <leader>2 :diffget 2<CR> :diffupdate<CR>
+map <silent> <leader>3 :diffget 3<CR> :diffupdate<CR>
+map <silent> <leader>4 :diffget 4<CR> :diffupdate<CR>
