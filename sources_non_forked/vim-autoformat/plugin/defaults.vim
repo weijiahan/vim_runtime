@@ -42,7 +42,7 @@ if !exists('g:formatter_yapf_style')
     let g:formatter_yapf_style = 'pep8'
 endif
 if !exists('g:formatdef_yapf')
-    let g:formatdef_yapf = "'yapf --style={based_on_style:'.g:formatter_yapf_style.',indent_width:'.&shiftwidth.'} -l '.a:firstline.'-'.a:lastline"
+    let g:formatdef_yapf = "'yapf --style=\"{based_on_style:'.g:formatter_yapf_style.',indent_width:'.&shiftwidth.'}\" -l '.a:firstline.'-'.a:lastline"
 endif
 
 if !exists('g:formatters_python')
@@ -140,12 +140,12 @@ if !exists('g:formatdef_jsbeautify_javascript')
     elseif filereadable(expand('~/.jsbeautifyrc'))
         let g:formatdef_jsbeautify_javascript = '"js-beautify"'
     else
-        let g:formatdef_jsbeautify_javascript = '"js-beautify -f - -".(&expandtab ? "s ".shiftwidth() : "t").(&textwidth ? " -w ".&textwidth : "")'
+        let g:formatdef_jsbeautify_javascript = '"js-beautify -X -f - -".(&expandtab ? "s ".shiftwidth() : "t").(&textwidth ? " -w ".&textwidth : "")'
     endif
 endif
 
 if !exists('g:formatdef_pyjsbeautify_javascript')
-    let g:formatdef_pyjsbeautify_javascript = '"js-beautify -".(&expandtab ? "s ".shiftwidth() : "t").(&textwidth ? " -w ".&textwidth : "")." -"'
+    let g:formatdef_pyjsbeautify_javascript = '"js-beautify -X -".(&expandtab ? "s ".shiftwidth() : "t").(&textwidth ? " -w ".&textwidth : "")." -"'
 endif
 
 if !exists('g:formatdef_jscs')
