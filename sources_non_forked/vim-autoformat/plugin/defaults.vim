@@ -152,11 +152,16 @@ if !exists('g:formatdef_jscs')
     let g:formatdef_jscs = '"jscs -x"'
 endif
 
+if !exists('g:formatdef_standard_javascript')
+    let g:formatdef_standard_javascript = '"standard --fix --stdin"'
+endif
+
 if !exists('g:formatters_javascript')
     let g:formatters_javascript = [
                 \ 'jsbeautify_javascript',
                 \ 'pyjsbeautify_javascript',
-                \ 'jscs'
+                \ 'jscs',
+                \ 'standard_javascript'
                 \ ]
 endif
 
@@ -332,3 +337,13 @@ endif
 if !exists('g:formatters_markdown')
     let g:formatters_markdown = ['remark_markdown']
 endif
+
+" Fortran
+if !exists('g:formatdef_fprettify')
+    let g:formatdef_fprettify = '"fprettify --no-report-errors --indent=".&shiftwidth'
+endif
+
+if !exists('g:formatters_fortran')
+    let g:formatters_fortran = ['fprettify']
+endif
+
