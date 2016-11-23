@@ -8,6 +8,9 @@ set pastetoggle=<F9>
 nnoremap <C-TAB> :tabnext<CR>
 nnoremap <S-TAB> :tabprev<CR>
 noremap <F5> :make<CR>
+nnoremap <F5> :w<CR> :silent make<CR>
+inoremap <F5> <Esc>:w<CR>:silent make<CR>
+vnoremap <F5> :<C-U>:w<CR>:silent make<CR>
 
 set linespace=1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -245,7 +248,7 @@ let g:formatdef_clangformat_objc = '"clang-format -style=file"'
 """"""""""""""""""""""""""""""
 " => vim-preview
 """"""""""""""""""""""""""""""
-nmap <leader>v :Preview<CR>
+au FileType markdown nmap <leader>v :Preview<CR>
 
 """"""""""""""""""""""""""""""
 " => Dash or Zeal
@@ -305,3 +308,9 @@ map <silent> <leader>1 :diffget 1<CR> :diffupdate<CR>
 map <silent> <leader>2 :diffget 2<CR> :diffupdate<CR>
 map <silent> <leader>3 :diffget 3<CR> :diffupdate<CR>
 map <silent> <leader>4 :diffget 4<CR> :diffupdate<CR>
+
+""""""""""""""""""""""""""""""
+" => plantuml 
+""""""""""""""""""""""""""""""
+let g:plantuml_executable_script='java -jar /usr/local/share/plantuml/plantuml.jar'
+au FileType plantuml nmap <leader>v :silent make<CR>:!open %:r.png<CR>
