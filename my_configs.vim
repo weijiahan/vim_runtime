@@ -313,4 +313,6 @@ map <silent> <leader>4 :diffget 4<CR> :diffupdate<CR>
 " => plantuml 
 """"""""""""""""""""""""""""""
 let g:plantuml_executable_script='java -jar /usr/local/share/plantuml/plantuml.jar'
-au FileType plantuml nmap <leader>v :silent make<CR>:!open %:r.png<CR>
+if has("mac") || has("macunix")
+    au FileType plantuml nmap <leader>v :silent make<CR>:!open %:r.png<CR>
+endif
