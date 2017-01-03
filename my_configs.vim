@@ -12,6 +12,13 @@ nnoremap <F5> :w<CR> :silent make<CR>
 inoremap <F5> <Esc>:w<CR>:silent make<CR>
 vnoremap <F5> :<C-U>:w<CR>:silent make<CR>
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => For OneCore
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 1 tab == 3 spaces
+set shiftwidth=3
+set tabstop=3
+
 set linespace=1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Language
@@ -316,3 +323,5 @@ let g:plantuml_executable_script='java -jar /usr/local/share/plantuml/plantuml.j
 if has("mac") || has("macunix")
     au FileType plantuml nmap <leader>v :silent make<CR>:!open %:r.png<CR>
 endif
+
+au FileType dot nmap <leader>v :silent make<CR>:GraphvizShow<CR>
