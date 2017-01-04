@@ -325,3 +325,5 @@ if has("mac") || has("macunix")
 endif
 
 au FileType dot nmap <leader>v :silent make<CR>:GraphvizShow<CR>
+
+autocmd FileType c,cpp,python,ruby,java,sh,javascript,fidl autocmd BufWritePre <buffer> :%s/\s\+$//e
