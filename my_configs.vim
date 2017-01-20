@@ -95,6 +95,22 @@ au Syntax * RainbowParenthesesLoadBraces
 """"""""""""""""""""""""""""""
 nmap <leader>tb :TagbarToggle<CR>
 
+" tagbar support fidl
+let g:tagbar_type_fidl = {
+    \ 'ctagstype' : 'fidl',
+    \ 'kinds'     : [
+        \ 'i:interface',
+        \ 't:typeCollection',
+        \ 'm:method',
+        \ 'b:broadcast',
+        \ 's:struct',
+        \ 'u:union',
+        \ 'a:map',
+        \ 'y:typedef',
+        \ 'e:enumeration'
+    \ ]
+\ }
+
 let g:tagbar_type_css = {
 \ 'ctagstype' : 'CSS',
     \ 'ctagsbin'  : 'ctags',
