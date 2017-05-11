@@ -54,6 +54,7 @@ corporation https://github.com/vim-scripts/corporation
 nerdtree-git-plugin https://github.com/Xuyuanp/nerdtree-git-plugin
 plantuml-syntax https://github.com/aklt/plantuml-syntax
 vim-better-whitespace https://github.com/ntpeters/vim-better-whitespace
+vim_current_word https://github.com/dominikduda/vim_current_word
 """.strip()
 
 # taglist.vim https://github.com/vim-scripts/taglist.vim
