@@ -284,7 +284,7 @@ elseif has("unix")
 endif
 
 """"""""""""""""""""""""""""""
-" => vim-commentary 
+" => vim-commentary
 """"""""""""""""""""""""""""""
 autocmd FileType apache setlocal commentstring=#\ %s
 autocmd FileType cmake setlocal commentstring=#\ %s
@@ -333,7 +333,7 @@ map <silent> <leader>3 :diffget 3<CR> :diffupdate<CR>
 map <silent> <leader>4 :diffget 4<CR> :diffupdate<CR>
 
 """"""""""""""""""""""""""""""
-" => plantuml 
+" => plantuml
 """"""""""""""""""""""""""""""
 let g:plantuml_executable_script='java -jar /usr/local/share/plantuml/plantuml.jar'
 if has("mac") || has("macunix")
@@ -342,4 +342,6 @@ endif
 
 au FileType dot nmap <leader>v :silent make<CR>:GraphvizShow<CR>
 
-autocmd FileType c,cpp,python,ruby,java,sh,javascript,fidl,proto autocmd BufWritePre <buffer> :%s/\s\+$//e
+" autocmd FileType c,cpp,python,ruby,java,sh,javascript,fidl,proto autocmd BufWritePre <buffer> :%s/\s\+$//e
+" autocmd FileType c,cpp,python,ruby,java,sh,javascript,fidl,proto autocmd BufWritePre <buffer> :StripWhitespace
+autocmd BufEnter * EnableStripWhitespaceOnSave
