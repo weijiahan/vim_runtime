@@ -1,3 +1,4 @@
+
 "
 " This file contains default settings and all format program definitions and links these to filetypes
 "
@@ -42,8 +43,14 @@ if !exists('g:formatter_yapf_style')
     let g:formatter_yapf_style = 'pep8'
 endif
 if !exists('g:formatdef_yapf')
-    let g:formatdef_yapf = "'yapf --style=\"{based_on_style:'.g:formatter_yapf_style.',indent_width:'.&shiftwidth.(&textwidth ? ',column_limit:'.&textwidth : '').'}\" -l '.a:firstline.'-'.a:lastline"
+    let s:configfile_def   = "'yapf -l '.a:firstline.'-'.a:lastline"
+    let s:noconfigfile_def = "'yapf --style=\"{based_on_style:'.g:formatter_yapf_style.',indent_width:'.&shiftwidth.(&textwidth ? ',column_limit:'.&textwidth : '').'}\" -l '.a:firstline.'-'.a:lastline"
+    let g:formatdef_yapf   = "g:YAPFFormatConfigFileExists() ? (" . s:configfile_def . ") : (" . s:noconfigfile_def . ")"
 endif
+
+function! g:YAPFFormatConfigFileExists()
+    return len(findfile(".style.yapf", expand("%:p:h").";")) || len(findfile("setup.cfg", expand("%:p:h").";"))
+endfunction
 
 if !exists('g:formatters_python')
     let g:formatters_python = ['autopep8','yapf']
@@ -140,12 +147,8 @@ if !exists('g:formatdef_jsbeautify_javascript')
     elseif filereadable(expand('~/.jsbeautifyrc'))
         let g:formatdef_jsbeautify_javascript = '"js-beautify"'
     else
-        let g:formatdef_jsbeautify_javascript = '"js-beautify -X -f - -".(&expandtab ? "s ".shiftwidth() : "t").(&textwidth ? " -w ".&textwidth : "")'
+        let g:formatdef_jsbeautify_javascript = '"js-beautify -X -".(&expandtab ? "s ".shiftwidth() : "t").(&textwidth ? " -w ".&textwidth : "")'
     endif
-endif
-
-if !exists('g:formatdef_pyjsbeautify_javascript')
-    let g:formatdef_pyjsbeautify_javascript = '"js-beautify -X -".(&expandtab ? "s ".shiftwidth() : "t").(&textwidth ? " -w ".&textwidth : "")." -"'
 endif
 
 if !exists('g:formatdef_jscs')
@@ -156,49 +159,67 @@ if !exists('g:formatdef_standard_javascript')
     let g:formatdef_standard_javascript = '"standard --fix --stdin"'
 endif
 
+" This is an xo formatter (inspired by the above eslint formatter)
+" To support ignore and overrides options, we need to use a tmp file
+" So we create a tmp file here and then remove it afterwards
 if !exists('g:formatdef_xo_javascript')
-    let g:formatdef_xo_javascript = '"xo --fix --stdin"'
+    function! g:BuildXOLocalCmd()
+        let l:xo_js_tmp_file = fnameescape(tempname().".js")
+        let content = getline('1', '$')
+        call writefile(content, l:xo_js_tmp_file)
+        return "xo --fix ".l:xo_js_tmp_file." 1> /dev/null; exit_code=$?
+                     \ cat ".l:xo_js_tmp_file."; rm -f ".l:xo_js_tmp_file."; exit $exit_code"
+    endfunction
+    let g:formatdef_xo_javascript = "g:BuildXOLocalCmd()"
 endif
 
 " Setup ESLint local. Setup is done on formatter execution if ESLint and
 " corresponding config is found they are used, otherwiese the formatter fails.
 " No windows support at the moment.
 if !exists('g:formatdef_eslint_local')
-	function! g:BuildESLintLocalCmd()
-		let l:path = fnamemodify(expand('%'), ':p')
-		let verbose = &verbose || g:autoformat_verbosemode == 1
-		if has('win32')
-			return "(>&2 echo 'ESLint Local not supported on win32')"
-		endif
-		" find formatter & config file
-		let l:prog = findfile('node_modules/.bin/eslint', l:path.";")
-		let l:cfg = findfile('.eslintrc.json', l:path.";")
-		if empty(l:cfg)
-			let l:cfg = findfile('.eslintrc', l:path.";")
-		endif
-		if (empty(l:cfg) || empty(l:prog))
-			if verbose
-				return "(>&2 echo 'No local ESLint program and/or config found')"
-			endif
-			return 
-		endif
+    function! g:BuildESLintLocalCmd()
+        let l:path = fnamemodify(expand('%'), ':p')
+        let verbose = &verbose || g:autoformat_verbosemode == 1
+        if has('win32')
+            return "(>&2 echo 'ESLint Local not supported on win32')"
+        endif
+        " find formatter & config file
+        let l:prog = findfile('node_modules/.bin/eslint', l:path.";")
+        let l:cfg = findfile('.eslintrc.js', l:path.";")
+        if empty(l:cfg)
+            let l:cfg = findfile('.eslintrc.yaml', l:path.";")
+        endif
+        if empty(l:cfg)
+            let l:cfg = findfile('.eslintrc.yml', l:path.";")
+        endif
+        if empty(l:cfg)
+            let l:cfg = findfile('.eslintrc.json', l:path.";")
+        endif
+        if empty(l:cfg)
+            let l:cfg = findfile('.eslintrc', l:path.";")
+        endif
+        if (empty(l:cfg) || empty(l:prog))
+            if verbose
+                return "(>&2 echo 'No local ESLint program and/or config found')"
+            endif
+            return
+        endif
 
-		" This formatter uses a temporary file as ESLint has not option to print 
-		" the formatted source to stdout without modifieing the file.
-		let l:eslint_js_tmp_file = fnameescape(tempname().".js")
-		let content = getline('1', '$')
-		call writefile(content, l:eslint_js_tmp_file)
-		return l:prog." -c ".l:cfg." --fix ".l:eslint_js_tmp_file." 1> /dev/null; exit_code=$?
-					 \ cat ".l:eslint_js_tmp_file."; rm -f ".l:eslint_js_tmp_file."; exit $exit_code"
-	endfunction
-	let g:formatdef_eslint_local = "g:BuildESLintLocalCmd()"
+        " This formatter uses a temporary file as ESLint has not option to print
+        " the formatted source to stdout without modifieing the file.
+        let l:eslint_js_tmp_file = fnameescape(tempname().".js")
+        let content = getline('1', '$')
+        call writefile(content, l:eslint_js_tmp_file)
+        return l:prog." -c ".l:cfg." --fix ".l:eslint_js_tmp_file." 1> /dev/null; exit_code=$?
+                     \ cat ".l:eslint_js_tmp_file."; rm -f ".l:eslint_js_tmp_file."; exit $exit_code"
+    endfunction
+    let g:formatdef_eslint_local = "g:BuildESLintLocalCmd()"
 endif
 
 if !exists('g:formatters_javascript')
     let g:formatters_javascript = [
-				\ 'eslint_local',
+                \ 'eslint_local',
                 \ 'jsbeautify_javascript',
-                \ 'pyjsbeautify_javascript',
                 \ 'jscs',
                 \ 'standard_javascript',
                 \ 'xo_javascript'
@@ -212,18 +233,14 @@ if !exists('g:formatdef_jsbeautify_json')
     elseif filereadable(expand('~/.jsbeautifyrc'))
         let g:formatdef_jsbeautify_json = '"js-beautify"'
     else
-        let g:formatdef_jsbeautify_json = '"js-beautify -f - -".(&expandtab ? "s ".shiftwidth() : "t")'
+        let g:formatdef_jsbeautify_json = '"js-beautify -".(&expandtab ? "s ".shiftwidth() : "t")'
     endif
 endif
 
-if !exists('g:formatdef_pyjsbeautify_json')
-    let g:formatdef_pyjsbeautify_json = '"js-beautify -".(&expandtab ? "s ".shiftwidth() : "t")." -"'
-endif
 
 if !exists('g:formatters_json')
     let g:formatters_json = [
                 \ 'jsbeautify_json',
-                \ 'pyjsbeautify_json',
                 \ ]
 endif
 
@@ -391,4 +408,3 @@ endif
 if !exists('g:formatters_fortran')
     let g:formatters_fortran = ['fprettify']
 endif
-

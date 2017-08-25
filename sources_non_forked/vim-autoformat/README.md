@@ -16,13 +16,14 @@ by running `vim --version` and check that `+python` or `+python3` is listed amon
 
 #### Vundle
 
-Put this in your .vimrc
+Put this in your `.vimrc`.
 
 ```vim
 Plugin 'Chiel92/vim-autoformat'
 ```
 
-Then restart vim and run `:PluginInstall`.
+Then restart vim and run `:PluginInstall`. Alternatively, you could run `:source $MYVIMRC`
+to reload your `.vimrc` without restarting vim.
 To update the plugin to the latest version, you can run `:PluginUpdate`.
 
 #### Pathogen
@@ -134,7 +135,10 @@ Here is a list of formatprograms that are supported by default, and thus will be
   And here the link to its page on the python website: http://pypi.python.org/pypi/autopep8/0.5.2.
 
 * `yapf` for __Python__ (supports formatting ranges).
-  It is readily available through PIP. Most users can install with the terminal command `sudo pip install yapf` or `pip  install --user yapf`.
+  Vim-autoformat checks whether there exists a `.style.yapf` or a `setup.cfg` file up in the current directory's ancestry.
+  Based on that it either uses that file or tries to match vim options as much as possible.
+  It is readily available through PIP.
+  Most users can install with the terminal command `sudo pip install yapf` or `pip  install --user yapf`.
   YAPF has one optional configuration variable to control the formatter style.
   For example:
 
@@ -224,7 +228,7 @@ Here is a list of formatprograms that are supported by default, and thus will be
 * `fprettify` for modern __Fortran__.
   Download from [official repository](https://github.com/pseewald/fprettify). Install with `./setup.py install` or `./setup.py install --user`.
 
-## It doesn't work!
+## Help, the formatter doesn't work as expected!
 
 If you're struggling with getting a formatter to work, it may help to set vim-autoformat in
 verbose-mode. Vim-autoformat will then output errors on formatters that failed.
@@ -238,6 +242,13 @@ let verbose=1
 To read all messages in a vim session type `:messages`.  Since one cannot always easily copy
 the contents of messages (e.g. for posting it in an issue), vim-autoformats command `:PutMessages` may
 help. It puts the messages in the current buffer, allowing you to do whatever you want.
+
+#### Reporting bugs
+
+Please report bugs by creating an issue in this repository.
+When there are problems with getting a certain formatter to work, provide the output of verbose
+mode in the issue.
+
 ## How can I change the behaviour of formatters, or add one myself?
 
 If you need a formatter that is not among the defaults, or if you are not satisfied with the default formatting behaviour that is provided by vim-autoformat, you can define it yourself.
