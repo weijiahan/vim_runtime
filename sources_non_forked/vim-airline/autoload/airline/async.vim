@@ -15,16 +15,16 @@ function! s:untracked_output(dict, buf)
 endfunction
 
 function! s:mq_output(buf, file)
-  let buf=''
+  let buf=a:buf
   if !empty(a:buf)
     if a:buf is# 'no patches applied' ||
       \ a:buf =~# "unknown command 'qtop'"
       let buf = ''
-    elseif exists("b:mq") && b:mq isnot# a:buf
+    elseif exists("b:mq") && b:mq isnot# buf
       " make sure, statusline is updated
       unlet! b:airline_head
     endif
-    let b:mq = a:buf
+    let b:mq = buf
   endif
   if has_key(s:mq_jobs, a:file)
     call remove(s:mq_jobs, a:file)
@@ -40,6 +40,13 @@ function! s:po_output(buf, file)
   if has_key(s:po_jobs, a:file)
     call remove(s:po_jobs, a:file)
   endif
+endfunction
+
+function! s:valid_dir(dir)
+  if empty(a:dir) || !isdirectory(a:dir)
+    return getcwd()
+  endif
+  return a:dir
 endfunction
 
 if v:version >= 800 && has("job")
@@ -135,10 +142,14 @@ if v:version >= 800 && has("job")
 elseif has("nvim")
   " NVim specific functions
 
-  function! s:nvim_untracked_job_handler(job_id, data, event) dict
-    if a:event == 'stdout'
+  function! s:nvim_output_handler(job_id, data, event) dict
+    if a:event == 'stdout' || a:event == 'stderr'
       let self.buf .=  join(a:data)
-    else " on_exit handler
+    endif
+  endfunction
+
+  function! s:nvim_untracked_job_handler(job_id, data, event) dict
+    if a:event == 'exit'
       call s:untracked_output(self, self.buf)
       if has_key(s:untracked_jobs, self.file)
         call remove(s:untracked_jobs, self.file)
@@ -147,19 +158,13 @@ elseif has("nvim")
   endfunction
 
   function! s:nvim_mq_job_handler(job_id, data, event) dict
-    if a:event == 'stdout'
-      let self.buf .=  join(a:data)
-    else " on_exit handler
+    if a:event == 'exit'
       call s:mq_output(self.buf, self.file)
     endif
   endfunction
 
   function! s:nvim_po_job_handler(job_id, data, event) dict
-    if a:event == 'stdout'
-      let self.buf .=  join(a:data)
-    elseif a:event == 'stderr'
-      let self.buf .=  join(a:data)
-    else " on_exit handler
+    if a:event == 'exit'
       call s:po_output(self.buf, self.file)
       call airline#extensions#po#shorten()
     endif
@@ -169,8 +174,9 @@ elseif has("nvim")
     let config = {
     \ 'buf': '',
     \ 'file': a:file,
-    \ 'cwd': fnamemodify(a:file, ':p:h'),
-    \ 'on_stdout': function('s:nvim_mq_job_handler'),
+    \ 'cwd': s:valid_dir(fnamemodify(a:file, ':p:h')),
+    \ 'on_stdout': function('s:nvim_output_handler'),
+    \ 'on_stderr': function('s:nvim_output_handler'),
     \ 'on_exit': function('s:nvim_mq_job_handler')
     \ }
     if g:airline#init#is_windows && &shell =~ 'cmd'
@@ -190,9 +196,9 @@ elseif has("nvim")
     let config = {
     \ 'buf': '',
     \ 'file': a:file,
-    \ 'cwd': fnamemodify(a:file, ':p:h'),
-    \ 'on_stdout': function('s:nvim_po_job_handler'),
-    \ 'on_stderr': function('s:nvim_po_job_handler'),
+    \ 'cwd': s:valid_dir(fnamemodify(a:file, ':p:h')),
+    \ 'on_stdout': function('s:nvim_output_handler'),
+    \ 'on_stderr': function('s:nvim_output_handler'),
     \ 'on_exit': function('s:nvim_po_job_handler')
     \ }
     if g:airline#init#is_windows && &shell =~ 'cmd'
@@ -213,19 +219,19 @@ endif
 
 " Should work in either Vim pre 8 or Nvim
 function! airline#async#nvim_vcs_untracked(cfg, file, vcs)
+  let cmd = a:cfg.cmd . shellescape(a:file)
+  let id = -1
   let config = {
   \ 'buf': '',
   \ 'vcs': a:vcs,
   \ 'cfg': a:cfg,
   \ 'file': a:file,
-  \ 'cwd': fnamemodify(a:file, ':p:h'),
-  \ 'on_stdout': function('s:nvim_untracked_job_handler'),
-  \ 'on_exit': function('s:nvim_untracked_job_handler')
+  \ 'cwd': s:valid_dir(fnamemodify(a:file, ':p:h'))
   \ }
-  let cmd = a:cfg.cmd . shellescape(a:file)
-  if !has("nvim")
-    let id = -1
-  else
+  if has("nvim")
+    call extend(config, {
+    \ 'on_stdout': function('s:nvim_output_handler'),
+    \ 'on_exit': function('s:nvim_untracked_job_handler')})
     if has_key(s:untracked_jobs, config.file)
       " still running
       return
