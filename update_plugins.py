@@ -2,6 +2,7 @@ import zipfile
 import shutil
 import tempfile
 import requests
+import os, stat
 
 from os import path
 
@@ -103,3 +104,6 @@ if __name__ == '__main__':
                                      temp_directory, SOURCE_DIR)
     finally:
         shutil.rmtree(temp_directory)
+
+    markdown2ctags_path = path.join(SOURCE_DIR, "markdown2ctags/markdown2ctags.py")
+    os.chmod(markdown2ctags_path, stat.S_IRWXU|stat.S_IRGRP|stat.S_IWGRP|stat.S_IROTH|stat.S_IWOTH)
