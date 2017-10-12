@@ -20,34 +20,6 @@ set shiftwidth=3
 set tabstop=3
 
 set linespace=1
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Language
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Chinese
-" multi-encoding setting
-if has("multi_byte")
-  "set bomb
-  set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,sjis,euc-kr,ucs-2le,latin1
-  " CJK environment detection and corresponding setting
-  if v:lang =~ "^zh_CN"
-    " Use cp936 to support GBK, euc-cn == gb2312
-    set encoding=chinese
-    set termencoding=chinese
-    set fileencoding=chinese
-  elseif v:lang =~ "^zh_TW"
-    " cp950, big5 or euc-tw
-    " Are they equal to each other?
-    set encoding=taiwan
-    set termencoding=taiwan
-    set fileencoding=taiwan
-  endif
-  " Detect UTF-8 locale, and replace CJK setting if needed
-  if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
-    set encoding=utf-8
-    set termencoding=utf-8
-    set fileencoding=utf-8
-  endif
-endif
 
 " change file to sjis encoding
 nnoremap <leader>sj :e! ++enc=sjis<CR>
@@ -56,6 +28,7 @@ nnoremap <leader>sj :e! ++enc=sjis<CR>
 " => NERDTree
 """"""""""""""""""""""""""""""
 let NERDTreeShowBookmarks=1
+let NERDTreeShowHidden=1
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -247,14 +220,6 @@ nmap <leader>mc <Plug>MarkClear<CR>
 nmap <leader>ma <Plug>MarkAllClear<CR>
 
 """"""""""""""""""""""""""""""
-" => vim-easymotion
-""""""""""""""""""""""""""""""
-" map  / <Plug>(easymotion-sn)
-" omap / <Plug>(easymotion-tn)
-" map  n <Plug>(easymotion-next)
-" map  N <Plug>(easymotion-prev)
-
-""""""""""""""""""""""""""""""
 " => ultisnips
 """"""""""""""""""""""""""""""
 let g:UltiSnipsExpandTrigger="<c-j>"
@@ -278,7 +243,7 @@ au FileType markdown nmap <leader>v :Preview<CR>
 """"""""""""""""""""""""""""""
 if has("mac") || has("macunix")
     :nmap <silent> <leader>d <Plug>DashSearch
-elseif has("unix")
+elseif has("linux")
     let g:investigate_command_for_python = '/usr/bin/zeal --query ^s'
     :nmap <silent> <leader>d :!zeal --query "<cword>"&<CR><CR>
 endif
@@ -292,13 +257,11 @@ autocmd FileType cmake setlocal commentstring=#\ %s
 """"""""""""""""""""""""""""""
 " => vim-go
 """"""""""""""""""""""""""""""
-let g:go_fmt_command = "goimports"
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
-let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 au FileType go nmap <leader>r <Plug>(go-run)
 au FileType go nmap <leader>b <Plug>(go-build)
