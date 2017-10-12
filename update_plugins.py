@@ -1,3 +1,11 @@
+try:
+    import concurrent.futures as futures
+except ImportError:
+    try:
+        import futures
+    except ImportError:
+        futures = None
+
 import zipfile
 import shutil
 import tempfile
@@ -6,12 +14,11 @@ import os, stat
 
 from os import path
 
-
 #--- Globals ----------------------------------------------
 PLUGINS = """
 ack.vim https://github.com/mileszs/ack.vim
 bufexplorer https://github.com/corntrace/bufexplorer
-ctrlp.vim https://github.com/kien/ctrlp.vim
+ctrlp.vim https://github.com/ctrlpvim/ctrlp.vim
 mayansmoke https://github.com/vim-scripts/mayansmoke
 nerdtree https://github.com/scrooloose/nerdtree
 nginx.vim https://github.com/vim-scripts/nginx.vim
@@ -30,15 +37,12 @@ vim-surround https://github.com/tpope/vim-surround
 vim-expand-region https://github.com/terryma/vim-expand-region
 vim-multiple-cursors https://github.com/terryma/vim-multiple-cursors
 vim-fugitive https://github.com/tpope/vim-fugitive
-vim-airline https://github.com/vim-airline/vim-airline
-vim-airline-themes https://github.com/vim-airline/vim-airline-themes
 goyo.vim https://github.com/junegunn/goyo.vim
 vim-zenroom2 https://github.com/amix/vim-zenroom2
 syntastic https://github.com/scrooloose/syntastic
 vim-repeat https://github.com/tpope/vim-repeat
 vim-commentary https://github.com/tpope/vim-commentary
 vim-go https://github.com/fatih/vim-go
-mark.vim https://github.com/mbriggs/mark.vim
 tagbar https://github.com/majutsushi/tagbar
 markdown2ctags https://github.com/jszakmeister/markdown2ctags
 wmgraphviz.vim https://github.com/wannesm/wmgraphviz.vim
@@ -50,17 +54,15 @@ gruvbox https://github.com/morhetz/gruvbox
 vim-gitgutter https://github.com/airblade/vim-gitgutter
 vim-preview https://github.com/greyblake/vim-preview
 dash.vim https://github.com/rizzatti/dash.vim
-molokai https://github.com/tomasr/molokai
 corporation https://github.com/vim-scripts/corporation
 nerdtree-git-plugin https://github.com/Xuyuanp/nerdtree-git-plugin
 plantuml-syntax https://github.com/aklt/plantuml-syntax
 vim-better-whitespace https://github.com/ntpeters/vim-better-whitespace
 vim_current_word https://github.com/dominikduda/vim_current_word
+lightline.vim https://github.com/itchyny/lightline.vim
+mru.vim https://github.com/vim-scripts/mru.vim
+vim-abolish https://github.com/tpope/tpope-vim-abolish
 """.strip()
-
-# taglist.vim https://github.com/vim-scripts/taglist.vim
-# snipmate-snippets https://github.com/scrooloose/snipmate-snippets
-# vim-snipmate https://github.com/garbas/vim-snipmate
 
 GITHUB_ZIP = '%s/archive/master.zip'
 
@@ -93,15 +95,24 @@ def download_extract_replace(plugin_name, zip_path, temp_dir, source_dir):
     print('Updated {0}'.format(plugin_name))
 
 
+def update(plugin):
+    name, github_url = plugin.split(' ')
+    zip_path = GITHUB_ZIP % github_url
+    print('temp dir {0}'.format(zip_path))
+    download_extract_replace(name, zip_path,
+                             temp_directory, SOURCE_DIR)
+
+
 if __name__ == '__main__':
     temp_directory = tempfile.mkdtemp()
+    print('temp dir {0}'.format(temp_directory))
 
     try:
-        for line in PLUGINS.splitlines():
-            name, github_url = line.split(' ')
-            zip_path = GITHUB_ZIP % github_url
-            download_extract_replace(name, zip_path,
-                                     temp_directory, SOURCE_DIR)
+        if futures:
+            with futures.ThreadPoolExecutor(16) as executor:
+                executor.map(update, PLUGINS.splitlines())
+        else:
+            [update(x) for x in PLUGINS.splitlines()]
     finally:
         shutil.rmtree(temp_directory)
 

@@ -243,7 +243,7 @@ au FileType markdown nmap <leader>v :Preview<CR>
 """"""""""""""""""""""""""""""
 if has("mac") || has("macunix")
     :nmap <silent> <leader>d <Plug>DashSearch
-elseif has("linux")
+elseif has("linux") || has("unix")
     let g:investigate_command_for_python = '/usr/bin/zeal --query ^s'
     :nmap <silent> <leader>d :!zeal --query "<cword>"&<CR><CR>
 endif
