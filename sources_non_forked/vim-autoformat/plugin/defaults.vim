@@ -159,6 +159,12 @@ if !exists('g:formatdef_standard_javascript')
     let g:formatdef_standard_javascript = '"standard --fix --stdin"'
 endif
 
+if !exists('g:formatdef_prettier_javascript')
+    if filereadable('.prettierrc')
+        let g:formatdef_prettier_javascript = '"prettier"'
+    endif
+endif
+
 " This is an xo formatter (inspired by the above eslint formatter)
 " To support ignore and overrides options, we need to use a tmp file
 " So we create a tmp file here and then remove it afterwards
@@ -188,43 +194,42 @@ if !exists('g:formatdef_eslint_local')
         let l:prog = findfile('node_modules/.bin/eslint', l:path.";")
         if empty(l:prog)
             let l:prog = findfile('~/.npm-global/bin/eslint')
+            if empty(l:prog)
+                let l:prog = findfile('/usr/local/bin/eslint')
+            endif
         endif
+
         "initial
-        let l:cfg = fnamemodify(findfile('.eslintrc.js', l:path.";"),':p')
+        let l:cfg = findfile('.eslintrc.js', l:path.";")
 
-        let l:tcfg = fnamemodify(findfile('.eslintrc.yaml', l:path.";"),':p')
-        if len(l:tcfg) > len(l:cfg)
-          let l:cfg = l:tcfg
-        endif
-        let l:tcfg = fnamemodify(findfile('.eslintrc.yml', l:path.";"),':p')
-        if len(l:tcfg) > len(l:cfg)
-          let l:cfg = l:tcfg
-        endif
-        let l:tcfg = fnamemodify(findfile('.eslintrc.json', l:path.";"),':p')
-        if len(l:tcfg) > len(l:cfg)
-          let l:cfg = l:tcfg
-        endif
-        let l:tcfg = fnamemodify(findfile('.eslintrc', l:path.";"),':p')
-        if len(l:tcfg) > len(l:cfg)
-          let l:cfg = l:tcfg
+        if empty(l:cfg)
+            let l:cfg_fallbacks = [
+                \'.eslintrc.yaml',
+                \'.eslintrc.yml',
+                \'.eslintrc.json',
+                \'.eslintrc',
+            \]
+
+            for i in l:cfg_fallbacks
+                let l:tcfg = findfile(i, l:path.";")
+                if !empty(l:tcfg)
+                    break
+                endif
+            endfor
+
+            if !empty(l:tcfg)
+                let l:cfg = fnamemodify(l:tcfg, ":p")
+            else
+                let l:cfg = findfile('~/.eslintrc.js')
+                for i in l:cfg_fallbacks
+                    if !empty(l:cfg)
+                        break
+                    endif
+                    let l:cfg = findfile("~/".i)
+                endfor
+            endif
         endif
 
-        " This is in case we are outside home folder
-        if empty(l:cfg)
-            let l:cfg = findfile('~/.eslintrc.js')
-        endif
-        if empty(l:cfg)
-            let l:cfg = findfile('~/.eslintrc.yaml')
-        endif
-        if empty(l:cfg)
-            let l:cfg = findfile('~/.eslintrc.yml')
-        endif
-        if empty(l:cfg)
-            let l:cfg = findfile('~/.eslintrc.json')
-        endif
-        if empty(l:cfg)
-            let l:cfg = findfile('~/.eslintrc')
-        endif
         if (empty(l:cfg) || empty(l:prog))
             if verbose
                 return "(>&2 echo 'No local or global ESLint program and/or config found')"
@@ -249,7 +254,8 @@ if !exists('g:formatters_javascript')
                 \ 'jsbeautify_javascript',
                 \ 'jscs',
                 \ 'standard_javascript',
-                \ 'xo_javascript'
+                \ 'prettier_javascript',
+                \ 'xo_javascript',
                 \ ]
 endif
 
