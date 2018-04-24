@@ -11,6 +11,12 @@ noremap <F5> :make<CR>
 nnoremap <F5> :w<CR> :silent make<CR>
 inoremap <F5> <Esc>:w<CR>:silent make<CR>
 vnoremap <F5> :<C-U>:w<CR>:silent make<CR>
+if has("gui_running")
+   noremap <M-v> "+gp
+   inoremap <M-v> <C-R>+
+   cnoremap <M-v> <C-R>+
+   noremap <M-c> "+y
+endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => For OneCore
