@@ -248,7 +248,7 @@ au FileType markdown nmap <leader>v :Preview<CR>
 " => Dash or Zeal
 """"""""""""""""""""""""""""""
 if has("mac") || has("macunix")
-    :nnoremap <silent> <leader>d <Plug>DashSearch
+    :nnoremap <silent> <leader>d :Dash<CR>
 elseif has("linux") || has("unix")
     let g:investigate_command_for_python = '/usr/bin/zeal ^s'
     :nnoremap <silent> <leader>d :!zeal "<cword>"&<CR><CR>
