@@ -30,25 +30,14 @@ function! go#cmd#Build(bang, ...) abort
         \ map(copy(a:000), "expand(v:val)") +
         \ [".", "errors"]
 
-  " Vim async.
+  " Vim and Neovim async.
   if go#util#has_job()
-    if go#config#EchoCommandInfo()
-      call go#util#EchoProgress("building dispatched ...")
-    endif
-
     call s:cmd_job({
           \ 'cmd': ['go'] + args,
           \ 'bang': a:bang,
           \ 'for': 'GoBuild',
+          \ 'statustype': 'build'
           \})
-
-  " Nvim async.
-  elseif has('nvim')
-    if go#config#EchoCommandInfo()
-      call go#util#EchoProgress("building dispatched ...")
-    endif
-
-    call go#jobcontrol#Spawn(a:bang, "build", "GoBuild", args)
 
   " Vim 7.4 without async
   else
@@ -114,10 +103,16 @@ endfunction
 
 " Run runs the current file (and their dependencies if any) in a new terminal.
 function! go#cmd#RunTerm(bang, mode, files) abort
+  let cmd = "go run "
+  let tags = go#config#BuildTags()
+  if len(tags) > 0
+    let cmd .= "-tags " . go#util#Shellescape(tags) . " "
+  endif
+
   if empty(a:files)
-    let cmd = "go run ".  go#util#Shelljoin(go#tool#Files())
+    let cmd .= go#util#Shelljoin(go#tool#Files())
   else
-    let cmd = "go run ".  go#util#Shelljoin(map(copy(a:files), "expand(v:val)"), 1)
+    let cmd .= go#util#Shelljoin(map(copy(a:files), "expand(v:val)"), 1)
   endif
   call go#term#newmode(a:bang, cmd, a:mode)
 endfunction
@@ -138,8 +133,19 @@ function! go#cmd#Run(bang, ...) abort
     " anything. Once this is implemented we're going to make :GoRun async
   endif
 
+  let cmd = "go run "
+  let tags = go#config#BuildTags()
+  if len(tags) > 0
+    let cmd .= "-tags " . go#util#Shellescape(tags) . " "
+  endif
+
   if go#util#IsWin()
-    exec '!go run ' . go#util#Shelljoin(go#tool#Files())
+    if a:0 == 0
+      exec '!' . cmd . go#util#Shelljoin(go#tool#Files(), 1)
+    else
+      exec '!' . cmd . go#util#Shelljoin(map(copy(a:000), "expand(v:val)"), 1)
+    endif
+
     if v:shell_error
       redraws! | echon "vim-go: [run] " | echohl ErrorMsg | echon "FAILED"| echohl None
     else
@@ -152,9 +158,9 @@ function! go#cmd#Run(bang, ...) abort
   " :make expands '%' and '#' wildcards, so they must also be escaped
   let default_makeprg = &makeprg
   if a:0 == 0
-    let &makeprg = 'go run ' . go#util#Shelljoin(go#tool#Files(), 1)
+    let &makeprg = cmd . go#util#Shelljoin(go#tool#Files(), 1)
   else
-    let &makeprg = "go run " . go#util#Shelljoin(map(copy(a:000), "expand(v:val)"), 1)
+    let &makeprg = cmd . go#util#Shelljoin(map(copy(a:000), "expand(v:val)"), 1)
   endif
 
   let l:listtype = go#list#Type("GoRun")
@@ -186,14 +192,11 @@ function! go#cmd#Install(bang, ...) abort
     " expand all wildcards(i.e: '%' to the current file name)
     let goargs = map(copy(a:000), "expand(v:val)")
 
-    if go#config#EchoCommandInfo()
-      call go#util#EchoProgress("installing dispatched ...")
-    endif
-
     call s:cmd_job({
           \ 'cmd': ['go', 'install', '-tags', go#config#BuildTags()] + goargs,
           \ 'bang': a:bang,
           \ 'for': 'GoInstall',
+          \ 'statustype': 'install'
           \})
     return
   endif
@@ -272,57 +275,11 @@ endfunction
 " | Vim job callbacks |
 " ---------------------
 
-function s:cmd_job(args) abort
-  let status_dir = expand('%:p:h')
-  let started_at = reltime()
-
-  call go#statusline#Update(status_dir, {
-        \ 'desc': "current status",
-        \ 'type': a:args.cmd[1],
-        \ 'state': "started",
-        \})
-
+function! s:cmd_job(args) abort
   " autowrite is not enabled for jobs
   call go#cmd#autowrite()
 
-  function! s:complete(job, exit_status, data) closure abort
-    let status = {
-          \ 'desc': 'last status',
-          \ 'type': a:args.cmd[1],
-          \ 'state': "success",
-          \ }
-
-    if a:exit_status
-      let status.state = "failed"
-    endif
-
-    let elapsed_time = reltimestr(reltime(started_at))
-    " strip whitespace
-    let elapsed_time = substitute(elapsed_time, '^\s*\(.\{-}\)\s*$', '\1', '')
-    let status.state .= printf(" (%ss)", elapsed_time)
-
-    call go#statusline#Update(status_dir, status)
-  endfunction
-
-  let a:args.complete = funcref('s:complete')
-  let callbacks = go#job#Spawn(a:args)
-
-  let start_options = {
-        \ 'callback': callbacks.callback,
-        \ 'exit_cb': callbacks.exit_cb,
-        \ 'close_cb': callbacks.close_cb,
-        \ }
-
-  " pre start
-  let dir = getcwd()
-  let cd = exists('*haslocaldir') && haslocaldir() ? 'lcd ' : 'cd '
-  let jobdir = fnameescape(expand("%:p:h"))
-  execute cd . jobdir
-
-  call job_start(a:args.cmd, start_options)
-
-  " post start
-  execute cd . fnameescape(dir)
+  call go#job#Spawn(a:args.cmd, a:args)
 endfunction
 
 " vim: sw=2 ts=2 et

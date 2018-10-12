@@ -315,4 +315,4 @@ au FileType dot nmap <leader>v :silent make<CR>:GraphvizShow<CR>
 " autocmd FileType c,cpp,python,ruby,java,sh,javascript,fidl,proto autocmd BufWritePre <buffer> :StripWhitespace
 autocmd BufEnter * EnableStripWhitespaceOnSave
 
-let g:PreviewCSSPath='/Users/weijh/.vim_runtime/themes/github.css'
+let g:PreviewCSSPath='/home/weijh/.vim_runtime/themes/github.css'

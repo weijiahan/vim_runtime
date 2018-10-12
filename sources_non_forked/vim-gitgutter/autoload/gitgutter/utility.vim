@@ -7,11 +7,12 @@ function! gitgutter#utility#supports_overscore_sign()
 endfunction
 
 function! gitgutter#utility#setbufvar(buffer, varname, val)
-  let dict = get(getbufvar(a:buffer, ''), 'gitgutter', {})
+  let buffer = +a:buffer
+  let dict = get(getbufvar(buffer, '', {}), 'gitgutter', {})
   let needs_setting = empty(dict)
   let dict[a:varname] = a:val
   if needs_setting
-    call setbufvar(a:buffer, 'gitgutter', dict)
+    call setbufvar(buffer, 'gitgutter', dict)
   endif
 endfunction
 
@@ -114,7 +115,7 @@ function! gitgutter#utility#set_repo_path(bufnr) abort
   " *               -2 - not tracked by git
 
   call gitgutter#utility#setbufvar(a:bufnr, 'path', -1)
-  let cmd = gitgutter#utility#cd_cmd(a:bufnr, g:gitgutter_git_executable.' ls-files --error-unmatch --full-name '.gitgutter#utility#shellescape(s:filename(a:bufnr)))
+  let cmd = gitgutter#utility#cd_cmd(a:bufnr, g:gitgutter_git_executable.' ls-files --error-unmatch --full-name -- '.gitgutter#utility#shellescape(s:filename(a:bufnr)))
 
   if g:gitgutter_async && gitgutter#async#available()
     if has('lambda')

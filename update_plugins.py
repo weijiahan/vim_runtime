@@ -6,13 +6,14 @@ except ImportError:
     except ImportError:
         futures = None
 
-import zipfile
+import os
 import shutil
+import stat
 import tempfile
-import requests
-import os, stat
-
+import zipfile
 from os import path
+
+import requests
 
 #--- Globals ----------------------------------------------
 PLUGINS = """
@@ -80,8 +81,8 @@ def download_extract_replace(plugin_name, zip_path, temp_dir, source_dir):
     zip_f = zipfile.ZipFile(temp_zip_path)
     zip_f.extractall(temp_dir)
 
-    plugin_temp_path = path.join(temp_dir,
-                                 path.join(temp_dir, '%s-master' % plugin_name))
+    plugin_temp_path = path.join(
+        temp_dir, path.join(temp_dir, '%s-master' % plugin_name))
 
     # Remove the current plugin and replace it with the extracted
     plugin_dest_path = path.join(source_dir, plugin_name)
@@ -99,8 +100,7 @@ def download_extract_replace(plugin_name, zip_path, temp_dir, source_dir):
 def update(plugin):
     name, github_url = plugin.split(' ')
     zip_path = GITHUB_ZIP % github_url
-    download_extract_replace(name, zip_path,
-                             temp_directory, SOURCE_DIR)
+    download_extract_replace(name, zip_path, temp_directory, SOURCE_DIR)
 
 
 if __name__ == '__main__':
@@ -115,5 +115,8 @@ if __name__ == '__main__':
     finally:
         shutil.rmtree(temp_directory)
 
-    markdown2ctags_path = path.join(SOURCE_DIR, "markdown2ctags/markdown2ctags.py")
-    os.chmod(markdown2ctags_path, stat.S_IRWXU|stat.S_IRGRP|stat.S_IWGRP|stat.S_IROTH|stat.S_IWOTH)
+    markdown2ctags_path = path.join(SOURCE_DIR,
+                                    "markdown2ctags/markdown2ctags.py")
+    os.chmod(
+        markdown2ctags_path, stat.S_IRWXU | stat.S_IRGRP | stat.S_IWGRP
+        | stat.S_IROTH | stat.S_IWOTH)
