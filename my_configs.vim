@@ -193,44 +193,11 @@ let g:tagbar_type_objc = {
 \ }
 
 """"""""""""""""""""""""""""""
-" => YouCompleteMe
-""""""""""""""""""""""""""""""
-"nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-"nnoremap <F6> :YcmForceCompileAndDiagnostics<CR>
-let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
-"Do not ask when starting vim
-let g:ycm_confirm_extra_conf = 0
-let g:syntastic_always_populate_loc_list = 1
-let g:ycm_error_symbol = '>>'
-let g:ycm_warning_symbol = '>*'
-nnoremap <leader>yl :YcmCompleter GoToDeclaration<CR>
-nnoremap <leader>yf :YcmCompleter GoToDefinition<CR>
-nnoremap <leader>yg :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nmap <F4> :YcmDiags<CR>
-
-
-""""""""""""""""""""""""""""""
 " => WM Graphviz
 """"""""""""""""""""""""""""""
 let g:WMGraphviz_output = "png"
 nnoremap <leader>ll :GraphvizCompile<CR>
 nnoremap <leader>lv :GraphvizShow<CR>
-
-""""""""""""""""""""""""""""""
-" => Mark.vim
-""""""""""""""""""""""""""""""
-nmap <leader>mm <Plug>MarkSet<CR>
-nmap <leader>mr <Plug>MarkRegex<CR>
-vmap <leader>mr <Plug>MarkRegex<CR>
-nmap <leader>mc <Plug>MarkClear<CR>
-nmap <leader>ma <Plug>MarkAllClear<CR>
-
-""""""""""""""""""""""""""""""
-" => ultisnips
-""""""""""""""""""""""""""""""
-let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 """"""""""""""""""""""""""""""
 " => vim-autoformat
