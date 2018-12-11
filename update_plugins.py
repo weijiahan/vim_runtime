@@ -56,7 +56,6 @@ lightline-ale https://github.com/maximbaz/lightline-ale
 vim-abolish https://github.com/tpope/tpope-vim-abolish
 mru https://github.com/vim-scripts/mru.vim
 vim-markdown https://github.com/plasticboy/vim-markdown
-comfortable-motion.vim https://github.com/yuttie/comfortable-motion.vim
 tagbar https://github.com/majutsushi/tagbar
 markdown2ctags https://github.com/jszakmeister/markdown2ctags
 wmgraphviz.vim https://github.com/wannesm/wmgraphviz.vim
