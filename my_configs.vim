@@ -255,3 +255,13 @@ au FileType dot nmap <leader>v :silent make<CR>:GraphvizShow<CR>
 autocmd BufEnter * EnableStripWhitespaceOnSave
 
 let g:PreviewCSSPath='/home/weijh/.vim_runtime/themes/github.css'
+
+""""""""""""""""""""""""""""""
+" => rust
+""""""""""""""""""""""""""""""
+let g:rustfmt_autosave = 1
+
+
+" syntax enable
+" set background=light
+" colorscheme solarized

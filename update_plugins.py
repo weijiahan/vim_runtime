@@ -68,6 +68,7 @@ plantuml-syntax https://github.com/aklt/plantuml-syntax
 vim-better-whitespace https://github.com/ntpeters/vim-better-whitespace
 vim_current_word https://github.com/dominikduda/vim_current_word
 rainbow_parentheses https://github.com/kien/rainbow_parentheses.vim
+rust https://github.com/rust-lang/rust.vim
 """.strip()
 
 GITHUB_ZIP = '%s/archive/master.zip'
