@@ -261,6 +261,9 @@ let g:PreviewCSSPath='/home/weijh/.vim_runtime/themes/github.css'
 """"""""""""""""""""""""""""""
 let g:rustfmt_autosave = 1
 
+if has("mac") || has("macunix")
+   set macligatures
+endif
 
 " syntax enable
 " set background=light
