@@ -32,7 +32,6 @@ tlib https://github.com/vim-scripts/tlib
 vim-addon-mw-utils https://github.com/MarcWeber/vim-addon-mw-utils
 vim-bundle-mako https://github.com/sophacles/vim-bundle-mako
 vim-coffee-script https://github.com/kchmck/vim-coffee-script
-vim-colors-solarized https://github.com/altercation/vim-colors-solarized
 vim-indent-object https://github.com/michaeljsmith/vim-indent-object
 vim-less https://github.com/groenewege/vim-less
 vim-markdown https://github.com/tpope/vim-markdown
@@ -69,6 +68,7 @@ vim-better-whitespace https://github.com/ntpeters/vim-better-whitespace
 vim_current_word https://github.com/dominikduda/vim_current_word
 rainbow_parentheses https://github.com/kien/rainbow_parentheses.vim
 rust https://github.com/rust-lang/rust.vim
+vim-solarized8 https://github.com/lifepillar/vim-solarized8.git
 """.strip()
 
 GITHUB_ZIP = '%s/archive/master.zip'

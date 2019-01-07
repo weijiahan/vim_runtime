@@ -265,4 +265,4 @@ if has("mac") || has("macunix")
    set macligatures
 endif
 
-colorscheme solarized
+colorscheme solarized8_flat
