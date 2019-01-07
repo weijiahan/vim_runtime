@@ -265,6 +265,4 @@ if has("mac") || has("macunix")
    set macligatures
 endif
 
-" syntax enable
-" set background=light
-" colorscheme solarized
+colorscheme solarized
