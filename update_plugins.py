@@ -60,7 +60,6 @@ markdown2ctags https://github.com/jszakmeister/markdown2ctags
 wmgraphviz.vim https://github.com/wannesm/wmgraphviz.vim
 vim-easymotion https://github.com/Lokaltog/vim-easymotion
 vim-autoformat https://github.com/Chiel92/vim-autoformat
-vim-preview https://github.com/greyblake/vim-preview
 dash https://github.com/rizzatti/dash.vim
 nerdtree-git-plugin https://github.com/Xuyuanp/nerdtree-git-plugin
 plantuml-syntax https://github.com/aklt/plantuml-syntax
