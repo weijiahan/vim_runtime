@@ -68,6 +68,7 @@ vim_current_word https://github.com/dominikduda/vim_current_word
 rainbow_parentheses https://github.com/kien/rainbow_parentheses.vim
 rust https://github.com/rust-lang/rust.vim
 vim-solarized8 https://github.com/lifepillar/vim-solarized8.git
+vim-colors-github https://github.com/cormacrelf/vim-colors-github
 """.strip()
 
 GITHUB_ZIP = '%s/archive/master.zip'
