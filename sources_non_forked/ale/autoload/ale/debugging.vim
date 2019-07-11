@@ -31,6 +31,7 @@ let s:global_variable_list = [
 \    'ale_list_vertical',
 \    'ale_list_window_size',
 \    'ale_loclist_msg_format',
+\    'ale_lsp_root',
 \    'ale_max_buffer_history_size',
 \    'ale_max_signs',
 \    'ale_maximum_file_size',
@@ -237,10 +238,17 @@ function! ale#debugging#Info() abort
 endfunction
 
 function! ale#debugging#InfoToClipboard() abort
-    redir @+>
+    if !has('clipboard')
+        call s:Echo('clipboard not available. Try :ALEInfoToFile instead.')
+
+        return
+    endif
+
+    redir => l:output
         silent call ale#debugging#Info()
     redir END
 
+    let @+ = l:output
     call s:Echo('ALEInfo copied to your clipboard')
 endfunction
 

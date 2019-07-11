@@ -5,17 +5,24 @@ let g:vim_current_word#twins_match_id = get(g:, 'vim_current_word#twins_match_id
 let g:vim_current_word#highlight_twins = get(g:, 'vim_current_word#highlight_twins', 1)
 let g:vim_current_word#highlight_current_word = get(g:, 'vim_current_word#highlight_current_word', 1)
 let g:vim_current_word#highlight_only_in_focused_window = get(g:, 'vim_current_word#highlight_only_in_focused_window', 1)
+let g:vim_current_word#delay_highlight = get(g:, 'vim_current_word#delay_highlight', 0)
+let s:disabled_by_focus_lost = 0
+let s:disabled_by_insert_mode = 0
 
 augroup vim_current_word
   autocmd!
-  autocmd CursorMoved * call s:highlight_word_under_cursor()
-  autocmd InsertEnter * call s:vim_current_word_disable()
-  autocmd InsertLeave * call s:vim_current_word_enable()
+  if g:vim_current_word#delay_highlight
+    autocmd CursorHold * call s:highlight_word_under_cursor()
+    autocmd CursorMoved * call s:clear_current_word_matches()
+  else
+    autocmd CursorMoved * call s:highlight_word_under_cursor()
+  endif
+  autocmd InsertEnter * call s:handle_insert_enter()
+  autocmd InsertLeave * call s:handle_insert_leave()
   if g:vim_current_word#highlight_only_in_focused_window
     autocmd WinLeave * call s:clear_current_word_matches()
-    autocmd FocusLost * call s:vim_current_word_disable()
-    autocmd FocusGained * call s:vim_current_word_enable()
-    autocmd FocusGained * call s:highlight_word_under_cursor()
+    autocmd FocusLost * call s:handle_focus_lost()
+    autocmd FocusGained * call s:handle_focus_gained()
   endif
 augroup END
 
@@ -48,7 +55,38 @@ function! s:vim_current_word_toggle()
     call s:vim_current_word_disable()
   else
     call s:vim_current_word_enable()
+    call s:highlight_word_under_cursor()
   endif
+endfunction
+
+" Disable plugin until insert leave
+function! s:handle_insert_enter()
+  if !g:vim_current_word#enabled | return 0 | endif
+  let s:disabled_by_insert_mode = 1
+  call s:vim_current_word_disable()
+endfunction
+
+" Enable plugin after insert leave
+function! s:handle_insert_leave()
+  if !s:disabled_by_insert_mode | return 0 | endif
+  let s:disabled_by_insert_mode = 0
+  call s:vim_current_word_enable()
+  call s:highlight_word_under_cursor()
+endfunction
+
+" Disable plugin until next focus
+function! s:handle_focus_lost()
+  if !g:vim_current_word#enabled | return 0 | endif
+  let s:disabled_by_focus_lost = 1
+  call s:vim_current_word_disable()
+endfunction
+
+" Enable plugin until next defocus
+function! s:handle_focus_gained()
+  if !s:disabled_by_focus_lost | return 0 | endif
+  let s:disabled_by_focus_lost = 0
+  call s:vim_current_word_enable()
+  call s:highlight_word_under_cursor()
 endfunction
 
 " Enable plugin
@@ -64,7 +102,8 @@ endfunction
 
 " Higlight current word and twins (aka 'main')
 function! s:highlight_word_under_cursor()
-  if !g:vim_current_word#enabled | return 0 | endif
+  let s:vim_current_word_disabled_in_this_buffer = get(b:, 'vim_current_word_disabled_in_this_buffer', 0)
+  if !g:vim_current_word#enabled || s:vim_current_word_disabled_in_this_buffer | return 0 | endif
   call s:clear_current_word_matches()
   if s:character_under_cursor()=~#'\k'
     call s:add_current_word_matches()

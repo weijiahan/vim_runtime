@@ -17,7 +17,7 @@ command! -range=% GoReferrers call go#guru#Referrers(<count>)
 command! -range=0 GoSameIds call go#guru#SameIds(1)
 command! -range=0 GoSameIdsClear call go#guru#ClearSameIds()
 command! -range=0 GoSameIdsToggle call go#guru#ToggleSameIds()
-command! -range=0 GoSameIdsAutoToggle call go#guru#AutoToogleSameIds()
+command! -range=0 GoSameIdsAutoToggle call go#guru#AutoToggleSameIds()
 
 " -- tags
 command! -nargs=* -range GoAddTags call go#tags#Add(<line1>, <line2>, <count>, <f-args>)
@@ -54,7 +54,8 @@ command! -nargs=* -bang GoCoverageBrowser call go#coverage#Browser(<bang>0, <f-a
 command! -nargs=0 -range=% GoPlay call go#play#Share(<count>, <line1>, <line2>)
 
 " -- def
-command! -nargs=* -range GoDef :call go#def#Jump('')
+command! -nargs=* -range GoDef :call go#def#Jump('', 0)
+command! -nargs=* -range GoDefType :call go#def#Jump('', 1)
 command! -nargs=? GoDefPop :call go#def#StackPop(<f-args>)
 command! -nargs=? GoDefStack :call go#def#Stack(<f-args>)
 command! -nargs=? GoDefStackClear :call go#def#StackClear(<f-args>)
@@ -114,5 +115,8 @@ command! -nargs=0 GoReportGitHubIssue call go#issue#New()
 
 " -- iferr
 command! -nargs=0 GoIfErr call go#iferr#Generate()
+
+" -- lsp
+command! -nargs=+ -complete=dir GoAddWorkspace call go#lsp#AddWorkspace(<f-args>)
 
 " vim: sw=2 ts=2 et

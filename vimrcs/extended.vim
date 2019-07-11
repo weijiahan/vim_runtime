@@ -26,7 +26,7 @@ set guioptions-=l
 set guioptions-=L
 
 " Colorscheme
-set background=light
+set background=dark
 colorscheme peaksea
 
 

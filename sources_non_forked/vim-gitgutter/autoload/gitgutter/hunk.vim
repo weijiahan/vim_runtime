@@ -123,6 +123,30 @@ function! gitgutter#hunk#cursor_in_hunk(hunk) abort
   return 0
 endfunction
 
+
+function! gitgutter#hunk#in_hunk(lnum)
+  " Hunks are sorted in the order they appear in the buffer.
+  for hunk in gitgutter#hunk#hunks(bufnr(''))
+    " if in a hunk on first line of buffer
+    if a:lnum == 1 && hunk[2] == 0
+      return 1
+    endif
+
+    " if in a hunk generally
+    if a:lnum >= hunk[2] && a:lnum < hunk[2] + (hunk[3] == 0 ? 1 : hunk[3])
+      return 1
+    endif
+
+    " if hunk starts after the given line
+    if a:lnum < hunk[2]
+      return 0
+    endif
+  endfor
+
+  return 0
+endfunction
+
+
 function! gitgutter#hunk#text_object(inner) abort
   let hunk = s:current_hunk()
 
@@ -147,17 +171,17 @@ endfunction
 
 function! gitgutter#hunk#stage() abort
   call s:hunk_op(function('s:stage'))
-  silent! call repeat#set("\<Plug>GitGutterStageHunk", -1)<CR>
+  silent! call repeat#set("\<Plug>GitGutterStageHunk", -1)
 endfunction
 
 function! gitgutter#hunk#undo() abort
   call s:hunk_op(function('s:undo'))
-  silent! call repeat#set("\<Plug>GitGutterUndoHunk", -1)<CR>
+  silent! call repeat#set("\<Plug>GitGutterUndoHunk", -1)
 endfunction
 
 function! gitgutter#hunk#preview() abort
   call s:hunk_op(function('s:preview'))
-  silent! call repeat#set("\<Plug>GitGutterPreviewHunk", -1)<CR>
+  silent! call repeat#set("\<Plug>GitGutterPreviewHunk", -1)
 endfunction
 
 
@@ -197,7 +221,7 @@ function! s:stage(hunk_diff)
   let diff = s:adjust_header(bufnr, a:hunk_diff)
   " Apply patch to index.
   call gitgutter#utility#system(
-        \ gitgutter#utility#cd_cmd(bufnr, g:gitgutter_git_executable.' apply --cached --unidiff-zero - '),
+        \ gitgutter#utility#cd_cmd(bufnr, g:gitgutter_git_executable.' '.g:gitgutter_git_args.' apply --cached --unidiff-zero - '),
         \ diff)
 
   " Refresh gitgutter's view of buffer.
@@ -216,10 +240,10 @@ function! s:undo(hunk_diff)
   if removed_only
     call append(lnum, lines)
   elseif added_only
-    execute lnum .','. (lnum+len(lines)-1) .'d'
+    execute lnum .','. (lnum+len(lines)-1) .'d _'
   else
     call append(lnum-1, lines[0:hunk[1]])
-    execute (lnum+hunk[1]) .','. (lnum+hunk[1]+hunk[3]) .'d'
+    execute (lnum+hunk[1]) .','. (lnum+hunk[1]+hunk[3]) .'d _'
   endif
 endfunction
 
