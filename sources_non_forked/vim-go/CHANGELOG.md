@@ -47,6 +47,10 @@ IMPROVEMENTS:
 * Calculate LSP position correctly when on a line that contains multi-byte
   characters before the position.
   [[GH-2389]](https://github.com/fatih/vim-go/pull/2389)
+* Calculate LSP position without using an external binary.
+  [[GH-2394]](https://github.com/fatih/vim-go/pull/2394)
+* Calculate Vim position correctly from LSP text position.
+  [[GH-2395]](https://github.com/fatih/vim-go/pull/2395)
 
 BUG FIXES:
 * display info about function and function types whose parameters are
@@ -93,6 +97,8 @@ BUG FIXES:
   [[GH-2367]](https://github.com/fatih/vim-go/pull/2367)
 * Fix `:GoDebugRestart`.
   [[GH-2390]](https://github.com/fatih/vim-go/pull/2390)
+* Do not execute tests twice in terminal mode.
+  [[GH-2397]](https://github.com/fatih/vim-go/pull/2397)
 
 
 ## 1.20 - (April 22, 2019)
