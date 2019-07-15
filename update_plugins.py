@@ -57,7 +57,7 @@ mru https://github.com/vim-scripts/mru.vim
 vim-markdown https://github.com/plasticboy/vim-markdown
 tagbar https://github.com/majutsushi/tagbar
 markdown2ctags https://github.com/jszakmeister/markdown2ctags
-wmgraphviz.vim https://github.com/wannesm/wmgraphviz.vim
+wmgraphviz https://github.com/wannesm/wmgraphviz.vim
 vim-easymotion https://github.com/Lokaltog/vim-easymotion
 vim-autoformat https://github.com/Chiel92/vim-autoformat
 dash https://github.com/rizzatti/dash.vim
