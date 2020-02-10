@@ -122,6 +122,9 @@ endif
 " When you press gv you Ack after the selected text
 vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
 
+" When you press gs you Ack current file after the selected text
+vnoremap <silent> gs :call VisualSelection('gs', '%:p')<CR>
+
 " Open Ack and put the cursor in the right position
 map <leader>g :Ack<Space>
 

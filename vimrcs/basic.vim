@@ -372,7 +372,9 @@ function! VisualSelection(direction, extra_filter) range
     let l:pattern = substitute(l:pattern, "\n$", "", "")
 
     if a:direction == 'gv'
-        call CmdLine("Ack '" . l:pattern . "' " )
+        call CmdLine("Ack '" . l:pattern . "' ")
+    elseif a:direction == 'gs'
+        call CmdLine("Ack '" . l:pattern . "' " . a:extra_filter)
     elseif a:direction == 'replace'
         call CmdLine("%s" . '/'. l:pattern . '/')
     endif
