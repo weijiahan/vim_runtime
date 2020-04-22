@@ -19,6 +19,7 @@ fun! gotest#write_file(path, contents) abort
   call mkdir(fnamemodify(l:full_path, ':h'), 'p')
   call writefile(a:contents, l:full_path)
   exe 'cd ' . l:dir . '/src'
+
   silent exe 'e! ' . a:path
 
   " Set cursor.
@@ -29,6 +30,11 @@ fun! gotest#write_file(path, contents) abort
       let l:byte = line2byte(l:lnum) + l:m
       exe 'goto '. l:byte
       call setline('.', substitute(getline('.'), "\x1f", '', ''))
+      silent noautocmd w!
+
+      call go#lsp#DidClose(expand('%:p'))
+      call go#lsp#DidOpen(expand('%:p'))
+
       break
     endif
 
@@ -43,6 +49,9 @@ endfun
 " The file will be copied to a new GOPATH-compliant temporary directory and
 " loaded as the current buffer.
 fun! gotest#load_fixture(path) abort
+  if go#util#has_job()
+    call go#lsp#CleanWorkspaces()
+  endif
   let l:dir = go#util#tempdir("vim-go-test/testrun/")
   let $GOPATH .= ':' . l:dir
   let l:full_path = l:dir . '/src/' . a:path
@@ -52,6 +61,9 @@ fun! gotest#load_fixture(path) abort
   silent exe 'noautocmd e ' . a:path
   silent exe printf('read %s/test-fixtures/%s', g:vim_go_root, a:path)
   silent noautocmd w!
+  if go#util#has_job()
+    call go#lsp#AddWorkspaceDirectory(fnamemodify(l:full_path, ':p:h'))
+  endif
 
   return l:dir
 endfun

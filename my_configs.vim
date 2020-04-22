@@ -219,7 +219,7 @@ let g:formatdef_clangformat_objc = '"clang-format -style=file"'
 """"""""""""""""""""""""""""""
 " => vim-preview
 """"""""""""""""""""""""""""""
-au FileType markdown nmap <leader>v :Preview<CR>
+au FileType markdown nmap <leader>v <Plug>MarkdownPreviewToggle
 
 """"""""""""""""""""""""""""""
 " => Dash or Zeal
@@ -275,3 +275,7 @@ if has("mac") || has("macunix")
    set macligatures
 endif
 
+""""""""""""""""""""""""""""""
+" => markdown
+""""""""""""""""""""""""""""""
+let g:vim_markdown_folding_disabled = 1
