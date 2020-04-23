@@ -275,7 +275,3 @@ if has("mac") || has("macunix")
    set macligatures
 endif
 
-""""""""""""""""""""""""""""""
-" => markdown
-""""""""""""""""""""""""""""""
-let g:vim_markdown_folding_disabled = 1

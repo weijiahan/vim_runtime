@@ -6,14 +6,12 @@ except ImportError:
     except ImportError:
         futures = None
 
-import os
+import zipfile
 import shutil
 import tempfile
-import zipfile
-import stat
-from os import path
-
 import requests
+
+from os import path
 
 #--- Globals ----------------------------------------------
 PLUGINS = """
@@ -70,9 +68,9 @@ vim-solarized8 https://github.com/lifepillar/vim-solarized8
 vim-colors-github https://github.com/cormacrelf/vim-colors-github
 """.strip()
 
-GITHUB_ZIP = '%s/archive/master.zip'
+GITHUB_ZIP = "%s/archive/master.zip"
 
-SOURCE_DIR = path.join(path.dirname(__file__), 'sources_non_forked')
+SOURCE_DIR = path.join(path.dirname(__file__), "sources_non_forked")
 
 
 def download_extract_replace(plugin_name, zip_path, temp_dir, source_dir):
@@ -80,13 +78,14 @@ def download_extract_replace(plugin_name, zip_path, temp_dir, source_dir):
 
     # Download and extract file in temp dir
     req = requests.get(zip_path)
-    open(temp_zip_path, 'wb').write(req.content)
+    open(temp_zip_path, "wb").write(req.content)
 
     zip_f = zipfile.ZipFile(temp_zip_path)
     zip_f.extractall(temp_dir)
 
     plugin_temp_path = path.join(
-        temp_dir, path.join(temp_dir, '%s-master' % plugin_name))
+        temp_dir, path.join(temp_dir, "%s-master" % plugin_name)
+    )
 
     # Remove the current plugin and replace it with the extracted
     plugin_dest_path = path.join(source_dir, plugin_name)
@@ -97,17 +96,16 @@ def download_extract_replace(plugin_name, zip_path, temp_dir, source_dir):
         pass
 
     shutil.move(plugin_temp_path, plugin_dest_path)
-
-    print('Updated {0}'.format(plugin_name))
+    print("Updated {0}".format(plugin_name))
 
 
 def update(plugin):
-    name, github_url = plugin.split(' ')
+    name, github_url = plugin.split(" ")
     zip_path = GITHUB_ZIP % github_url
     download_extract_replace(name, zip_path, temp_directory, SOURCE_DIR)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     temp_directory = tempfile.mkdtemp()
 
     try:
