@@ -26,9 +26,12 @@ set guioptions-=l
 set guioptions-=L
 
 " Colorscheme
+if has("termguicolors")
+    " enable true color
+    set termguicolors
+endif
 set background=dark
-colorscheme peaksea
-
+colorscheme NeoSolarized
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Fast editing and reloading of vimrc configs

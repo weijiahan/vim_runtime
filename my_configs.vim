@@ -3,6 +3,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set cursorline
 set cursorcolumn
+set ambiwidth=double
 " set relativenumber
 set pastetoggle=<F9>
 nnoremap <C-TAB> :tabnext<CR>
@@ -18,15 +19,6 @@ if has("gui_running")
    noremap <M-c> "+y
 endif
 
-if has("termguicolors")
-    " enable true color
-    set termguicolors
-endif
-
-set background=dark
-colorscheme solarized8_high
-let g:solarized_use16 = 1
-let g:go_version_warning = 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => For OneCore
