@@ -1,6 +1,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:gitgutter_override_sign_column_highlight = 0
 set cursorline
 set cursorcolumn
 set ambiwidth=double
@@ -195,11 +196,11 @@ let g:tagbar_type_objc = {
 \ }
 
 """"""""""""""""""""""""""""""
-" => WM Graphviz
+" => Graphviz
 """"""""""""""""""""""""""""""
-let g:WMGraphviz_output = "png"
+let g:graphviz_output_format = 'png'
 nnoremap <leader>ll :GraphvizCompile<CR>
-nnoremap <leader>lv :GraphvizShow<CR>
+nnoremap <leader>lv :Graphviz png<CR>
 
 """"""""""""""""""""""""""""""
 " => vim-autoformat
@@ -250,7 +251,7 @@ if has("mac") || has("macunix")
     au FileType plantuml nmap <leader>v :silent make<CR>:!open %:r.png<CR>
 endif
 
-au FileType dot nmap <leader>v :silent make<CR>:GraphvizShow<CR>
+au FileType dot nmap <leader>v :silent make<CR>:Graphviz png<CR>
 
 " autocmd FileType c,cpp,python,ruby,java,sh,javascript,fidl,proto autocmd BufWritePre <buffer> :%s/\s\+$//e
 " autocmd FileType c,cpp,python,ruby,java,sh,javascript,fidl,proto autocmd BufWritePre <buffer> :StripWhitespace
