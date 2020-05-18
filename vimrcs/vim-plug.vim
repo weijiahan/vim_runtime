@@ -1,6 +1,9 @@
 " Specify a directory for plugins
 call plug#begin('~/.vim_runtime/plugged')
 
+" keymap
+Plug 'liuchengxu/vim-which-key'
+
 " ui
 Plug 'iCyMind/NeoSolarized'               " another solarized color theme for truecolor
 Plug 'itchyny/lightline.vim'              " a light and configurable statusline/tabline plugin
@@ -28,7 +31,11 @@ Plug 'tpope/vim-repeat'                   " repeat the last command using '.'
 
 " tools
 Plug 'w0rp/ale'
-Plug 'rizzatti/dash.vim'                  " search api doc using dash or zeal
+if has("mac") || has("macunix")
+   Plug 'rizzatti/dash.vim'               " search api doc using dash
+elseif has("linux") || has("unix")
+   Plug 'KabbAmine/zeavim.vim'            " search api doc using zeal
+endif
 Plug 'ctrlpvim/ctrlp.vim'                 " full path fuzzy finder for Vim
 Plug 'mileszs/ack.vim'                    " run search tool from vim
 Plug 'Chiel92/vim-autoformat'             " format code

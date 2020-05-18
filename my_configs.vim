@@ -30,8 +30,6 @@ set tabstop=3
 
 set linespace=1
 
-" change file to sjis encoding
-nnoremap <leader>sj :e! ++enc=sjis<CR>
 
 """"""""""""""""""""""""""""""
 " => NERDTree
@@ -75,7 +73,6 @@ au Syntax * RainbowParenthesesLoadBraces
 """"""""""""""""""""""""""""""
 " => Tagbar
 """"""""""""""""""""""""""""""
-nmap <leader>tb :TagbarToggle<CR>
 
 " tagbar support fidl
 let g:tagbar_type_fidl = {
@@ -199,8 +196,6 @@ let g:tagbar_type_objc = {
 " => Graphviz
 """"""""""""""""""""""""""""""
 let g:graphviz_output_format = 'png'
-nnoremap <leader>ll :GraphvizCompile<CR>
-nnoremap <leader>lv :Graphviz png<CR>
 
 """"""""""""""""""""""""""""""
 " => vim-autoformat
@@ -209,20 +204,6 @@ noremap <F3> :Autoformat<CR>
 " au BufWrite * :Autoformat
 let g:formatdef_clangformat_objc = '"clang-format -style=file"'
 
-""""""""""""""""""""""""""""""
-" => vim-preview
-""""""""""""""""""""""""""""""
-au FileType markdown nmap <leader>v <Plug>MarkdownPreviewToggle
-
-""""""""""""""""""""""""""""""
-" => Dash or Zeal
-""""""""""""""""""""""""""""""
-if has("mac") || has("macunix")
-    :nnoremap <silent> <leader>d :Dash<CR>
-elseif has("linux") || has("unix")
-    let g:investigate_command_for_python = '/usr/bin/zeal ^s'
-    :nnoremap <silent> <leader>d :!zeal "<cword>"&<CR><CR>
-endif
 
 """"""""""""""""""""""""""""""
 " => vim-commentary
@@ -235,23 +216,6 @@ autocmd FileType cmake setlocal commentstring=#\ %s
 """"""""""""""""""""""""""""""
 let g:gitgutter_max_signs = 5000
 
-""""""""""""""""""""""""""""""
-" => vim-diff
-""""""""""""""""""""""""""""""
-map <silent> <leader>1 :diffget 1<CR> :diffupdate<CR>
-map <silent> <leader>2 :diffget 2<CR> :diffupdate<CR>
-map <silent> <leader>3 :diffget 3<CR> :diffupdate<CR>
-map <silent> <leader>4 :diffget 4<CR> :diffupdate<CR>
-
-""""""""""""""""""""""""""""""
-" => plantuml
-""""""""""""""""""""""""""""""
-let g:plantuml_executable_script='java -jar /usr/local/share/plantuml/plantuml.jar'
-if has("mac") || has("macunix")
-    au FileType plantuml nmap <leader>v :silent make<CR>:!open %:r.png<CR>
-endif
-
-au FileType dot nmap <leader>v :silent make<CR>:Graphviz png<CR>
 
 " autocmd FileType c,cpp,python,ruby,java,sh,javascript,fidl,proto autocmd BufWritePre <buffer> :%s/\s\+$//e
 " autocmd FileType c,cpp,python,ruby,java,sh,javascript,fidl,proto autocmd BufWritePre <buffer> :StripWhitespace

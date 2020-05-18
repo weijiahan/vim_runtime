@@ -5,19 +5,31 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""
+" => which-key plugin
+""""""""""""""""""""""""""""""
+nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
+vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
+nnoremap <localleader> :<c-u>WhichKey  ','<CR>
+vnoremap <localleader> :<c-u>WhichKeyVisual  ','<CR>
+
+
+""""""""""""""""""""""""""""""
 " => bufExplorer plugin
 """"""""""""""""""""""""""""""
 let g:bufExplorerDefaultHelp=0
 let g:bufExplorerShowRelativePath=1
 let g:bufExplorerFindActive=1
 let g:bufExplorerSortBy='name'
-map <leader>o :BufExplorer<cr>
+
+""""""""""""""""""""""""""""""
+" => tcomment plugin
+""""""""""""""""""""""""""""""
+let g:tcomment_mapleader2=0
 
 """"""""""""""""""""""""""""""
 " => MRU plugin
 """"""""""""""""""""""""""""""
 let MRU_Max_Entries = 400
-map <leader>f :MRU<CR>
 
 """"""""""""""""""""""""""""""
 " => CTRL-P
@@ -25,7 +37,6 @@ map <leader>f :MRU<CR>
 let g:ctrlp_working_path_mode = 0
 
 let g:ctrlp_map = '<c-p>'
-map <leader>j :CtrlP<cr>
 map <c-b> :CtrlPBuffer<cr>
 
 let g:ctrlp_max_height = 20
@@ -60,9 +71,6 @@ let g:NERDTreeWinPos = "left"
 let NERDTreeShowHidden=0
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 let g:NERDTreeWinSize=35
-map <leader>nn :NERDTreeToggle<cr>
-map <leader>nb :NERDTreeFromBookmark<Space>
-map <leader>nf :NERDTreeFind<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -116,7 +124,6 @@ let g:ale_linters = {
 \   'go': ['go', 'golint', 'errcheck']
 \}
 
-nmap <silent> <leader>a <Plug>(ale_next_wrap)
 
 " Disabling highlighting
 let g:ale_set_highlights = 0
@@ -130,4 +137,4 @@ let g:ale_lint_on_enter = 0
 " => Git gutter (Git diff)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:gitgutter_enabled=1
-" nnoremap <silent> <leader>d :GitGutterToggle<cr>
+let g:gitgutter_map_keys = 0
