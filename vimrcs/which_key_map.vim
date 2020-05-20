@@ -1,20 +1,8 @@
-" Shortcuts using <leader>
-map <leader>sn ]s
-map <leader>sp [s
-map <leader>sa zg
-map <leader>s? z=
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Misc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Remove the Windows ^M - when the encodings gets messed up
-noremap <Leader>mw mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+" nmap <silent> <leader>a <Plug>(ale_next_wrap)
 
-nmap <silent> <leader>a <Plug>(ale_next_wrap)
-
-" change file to sjis encoding
-nnoremap <leader>sj :e! ++enc=sjis<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => which key map
@@ -22,13 +10,20 @@ nnoremap <leader>sj :e! ++enc=sjis<CR>
 call which_key#register('<Space>', "g:which_key_map")
 let g:which_key_map =  {}
 
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => top menu
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 map <silent> <leader><cr> :noh<cr>
 let g:which_key_map['<CR>'] = 'disable-highlight'
-map <leader>. :CtrlP<cr>
+noremap <leader>. :<C-U><C-R>=printf("Leaderf file %s", "")<CR><CR>
 let g:which_key_map['.'] = 'find-file'
+noremap <leader>' :<C-U>Leaderf! rg --recall<CR>
+let g:which_key_map["\'"] = 'resume-last-search'
+noremap <leader>, :<C-U><C-R>=printf("Leaderf file %s", "")<CR><CR>
+let g:which_key_map[','] = 'switch-buffer'
+nmap <Leader>` :exe "tabn ".g:lasttab<CR>
+let g:which_key_map['`'] = 'last-tab'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -38,12 +33,11 @@ map <leader>bk :Bclose<cr>:tabclose<cr>gT
 map <leader>bK :bufdo bd<cr>
 map <leader>bN :e ~/buffer<cr>
 map <leader>bm :e ~/buffer.md<cr>
-nmap <script> <silent> <unique> <Leader>bi :BufExplorer<CR>
-nmap <script> <silent> <unique> <Leader>bs :BufExplorerHorizontalSplit<CR>
-nmap <script> <silent> <unique> <Leader>bv :BufExplorerVerticalSplit<CR>
+let g:Lf_ShortcutB = '<leader>bi'
 map <leader>bn :bnext<cr>
 map <leader>bp :bprevious<cr>
 map <leader>bd :cd %:p:h<cr>:pwd<cr>
+
 let g:which_key_map['b'] = {
    \ 'name' : '+buffer' ,
    \ 'd'    : 'switch-cwd-to-buffer' ,
@@ -54,80 +48,106 @@ let g:which_key_map['b'] = {
    \ 'n'    : 'next-buffer' ,
    \ 'N'    : 'new-empty-buffer' ,
    \ 'p'    : 'previous-buffer' ,
-   \ 's'    : 'buffer-list-split' ,
-   \ 'v'    : 'buffer-list-vsplit' ,
    \ }
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => code menu
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+noremap <leader>cj :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
+noremap <leader>cl :LeaderfFunction!<CR>
+
+let g:which_key_map['c'] = {
+   \ 'name' : '+code' ,
+   \ 'j'    : 'jump-to-symbol' ,
+   \ 'l'    : 'function-explore' ,
+   \ }
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => file menu
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:which_key_map.f = { 'name' : '+file' }
+let g:Lf_ShortcutF = '<leader>ff'
 nnoremap <silent> <leader>fs :update<CR>
-let g:which_key_map.f.s = 'save-file'
-map <leader>fd :e! ~/.vim_runtime/my_configs.vim<cr>
-let g:which_key_map.f.d = 'open-vimrc-file'
+map <leader>fS :w !sudo tee > /dev/null %<CR>
+map <leader>fd :e! ~/.vim_runtime/configs.vim<cr>
+map <leader>fo :NERDTreeFind<cr>
+noremap <leader>fm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
+
+" change file to sjis encoding
+nnoremap <leader>fej :e! ++enc=sjis<CR>
+nnoremap <leader>feu :e! ++enc=utf8<CR>
+" Remove the Windows ^M - when the encodings gets messed up
+noremap <Leader>fem mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+
+let g:which_key_map['f'] = {
+   \ 'name' : '+file' ,
+   \ 'd'    : 'open-vimrc-file' ,
+   \ 'e'    : {
+      \ 'name' : '+encode' ,
+      \ 'j' : 'convert-to-sjis' ,
+      \ 'u' : 'convert-to-utf8' ,
+      \ 'm' : 'remove windows ^M' ,
+      \ } ,
+   \ 'f'    : 'find-file' ,
+   \ 'm'    : 'mru' ,
+   \ 'o'    : 'file-in-nerdtree' ,
+   \ 's'    : 'save-file' ,
+   \ 'S'    : 'save-file-with-sudo' ,
+   \ }
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => tab and toggle menu
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:which_key_map.t = { 'name' : '+tab/toggle' }
 map <leader>tn :tabnew<cr>
-let g:which_key_map.t.n = 'new-tab'
 map <leader>to :tabonly<cr>
-let g:which_key_map.t.o = 'close-other-tab'
 map <leader>tc :tabclose<cr>
-let g:which_key_map.t.c = 'close-tab'
 map <leader>tm :tabmove
-let g:which_key_map.t.m = 'move-tab'
 map <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
-let g:which_key_map.t.e = 'new-tab-with-current-path'
 
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
 nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
 au TabLeave * let g:lasttab = tabpagenr()
-let g:which_key_map.t.l = 'last-tab'
 
-nmap <leader>tb :TagbarToggle<CR>
-let g:which_key_map.t.b = 'tagbar-toggle'
 map <leader>ts :setlocal spell!<cr>
-let g:which_key_map.t.s = 'spell-check-toggle'
 map <leader>tt :NERDTreeToggle<cr>
-let g:which_key_map.t.t = 'nerdtree-toggle'
 map <leader>tp :setlocal paste!<cr>
-let g:which_key_map.t.p = 'past-mode-toggle'
 nnoremap <silent> <leader>tg :GitGutterToggle<cr>
-let g:which_key_map.t.g = 'gitgutter-toggle'
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => file menu
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:which_key_map.f = { 'name' : '+file' }
-map <leader>fo :NERDTreeFind<cr>
-let g:which_key_map.f.o = 'file-in-nerdtree'
-map <leader>ff :CtrlP<cr>
-let g:which_key_map.f.f = 'find-file'
-map <leader>fl :MRU<CR>
-let g:which_key_map.f.l = 'access-file-list'
-
+let g:which_key_map['t'] = {
+   \ 'name' : '+tab/toggle' ,
+   \ 'n'    : 'new-tab' ,
+   \ 'o'    : 'close-other-tab' ,
+   \ 'c'    : 'close-tab' ,
+   \ 'm'    : 'move-tab' ,
+   \ 'e'    : 'new-tab-with-current-path' ,
+   \ 'l'    : 'last-tab' ,
+   \ 's'    : 'spell-check-toggle' ,
+   \ 't'    : 'nerdtree-toggle' ,
+   \ 'p'    : 'past-mode-toggle' ,
+   \ 'g'    : 'gitgutter-toggle' ,
+   \ }
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => search menu
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:which_key_map.s = { 'name' : '+search' }
-map <leader>sd :Ack<Space>
-let g:which_key_map.s.d = 'search-current-directory'
-map <leader>sl :botright cope<cr>
-let g:which_key_map.s.l = 'search-list'
-map <leader>sn :cn<cr>
-let g:which_key_map.s.n = 'next-search-result'
-map <leader>sp :cp<cr>
-let g:which_key_map.s.p = 'previous-search-result'
+noremap <leader>sd :<C-U><C-R>=printf("Leaderf! rg -e ")<CR>
+xnoremap <leader>sd :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR>
+noremap <leader>sl :<C-U>Leaderf! rg --recall<CR>
 vnoremap <silent> <leader>sr :call VisualSelection('replace', '')<CR>
-let g:which_key_map.s.r = 'replace-selected-text'
+noremap <leader>ss :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e ")<CR>
+xnoremap <leader>ss :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e %s ", leaderf#Rg#visual())<CR>
+noremap <leader>sb :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
 
+let g:which_key_map['s'] = {
+   \ 'name' : '+search' ,
+   \ 'b'    : 'fuzzy-search-current-buffer' ,
+   \ 'd'    : 'search-current-directory' ,
+   \ 'l'    : 'resume-last-search' ,
+   \ 'r'    : 'replace-selected-text' ,
+   \ 's'    : 'search-current-buffer' ,
+   \ }
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => help menu
