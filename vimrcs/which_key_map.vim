@@ -20,10 +20,12 @@ noremap <leader>. :<C-U><C-R>=printf("Leaderf file %s", "")<CR><CR>
 let g:which_key_map['.'] = 'find-file'
 noremap <leader>' :<C-U>Leaderf! rg --recall<CR>
 let g:which_key_map["\'"] = 'resume-last-search'
-noremap <leader>, :<C-U><C-R>=printf("Leaderf file %s", "")<CR><CR>
+noremap <leader>, :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
 let g:which_key_map[','] = 'switch-buffer'
 nmap <Leader>` :exe "tabn ".g:lasttab<CR>
 let g:which_key_map['`'] = 'last-tab'
+noremap <leader>: :<C-U><C-R>=printf("Leaderf command %s", "")<CR><CR>
+let g:which_key_map[':'] = 'command'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -142,7 +144,7 @@ noremap <leader>sb :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
 
 let g:which_key_map['s'] = {
    \ 'name' : '+search' ,
-   \ 'b'    : 'fuzzy-search-current-buffer' ,
+   \ 'b'    : 'fuzzy-search-line' ,
    \ 'd'    : 'search-current-directory' ,
    \ 'l'    : 'resume-last-search' ,
    \ 'r'    : 'replace-selected-text' ,
@@ -160,6 +162,8 @@ elseif has("linux") || has("unix")
     vmap <silent> <leader>hd <Plug>ZVVisSelection
 endif
 let g:which_key_map.h.d = 'docset'
+noremap <leader>hh :<C-U><C-R>=printf("Leaderf help %s", "")<CR><CR>
+let g:which_key_map.h.h = 'help-tags'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
