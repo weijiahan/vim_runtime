@@ -71,8 +71,7 @@ let g:which_key_map['c'] = {
 let g:Lf_ShortcutF = '<leader>ff'
 nnoremap <silent> <leader>fs :update<CR>
 map <leader>fS :w !sudo tee > /dev/null %<CR>
-map <leader>fd :e! ~/.vim_runtime/configs.vim<cr>
-map <leader>fo :NERDTreeFind<cr>
+map <leader>fd :e! ~/.vim_runtime/config.vim<cr>
 noremap <leader>fm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
 
 " change file to sjis encoding
@@ -92,11 +91,20 @@ let g:which_key_map['f'] = {
       \ } ,
    \ 'f'    : 'find-file' ,
    \ 'm'    : 'mru' ,
-   \ 'o'    : 'file-in-nerdtree' ,
    \ 's'    : 'save-file' ,
    \ 'S'    : 'save-file-with-sudo' ,
    \ }
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => open menu
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map <leader>op :NERDTreeToggle<cr>
+map <leader>oP :NERDTreeFind<cr>
+
+let g:which_key_map['o'] = {
+   \ 'p'    : 'nerdtree-toggle' ,
+   \ 'P'    : 'file-in-nerdtree' ,
+   \ }
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => tab and toggle menu
@@ -113,7 +121,6 @@ nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
 au TabLeave * let g:lasttab = tabpagenr()
 
 map <leader>ts :setlocal spell!<cr>
-map <leader>tt :NERDTreeToggle<cr>
 map <leader>tp :setlocal paste!<cr>
 nnoremap <silent> <leader>tg :GitGutterToggle<cr>
 
@@ -126,7 +133,6 @@ let g:which_key_map['t'] = {
    \ 'e'    : 'new-tab-with-current-path' ,
    \ 'l'    : 'last-tab' ,
    \ 's'    : 'spell-check-toggle' ,
-   \ 't'    : 'nerdtree-toggle' ,
    \ 'p'    : 'past-mode-toggle' ,
    \ 'g'    : 'gitgutter-toggle' ,
    \ }
@@ -139,16 +145,20 @@ xnoremap <leader>sd :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visua
 noremap <leader>sl :<C-U>Leaderf! rg --recall<CR>
 vnoremap <silent> <leader>sr :call VisualSelection('replace', '')<CR>
 noremap <leader>ss :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e ")<CR>
-xnoremap <leader>ss :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e %s ", leaderf#Rg#visual())<CR>
-noremap <leader>sb :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
+noremap <leader>sS :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e %s ", expand("<cword>"))<CR>
+xnoremap <leader>sS :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e %s ", leaderf#Rg#visual())<CR>
+noremap <leader>sb :<C-U><C-R>=printf("Leaderf! line %s", "")<CR><CR>
+noremap <leader>si :<C-U><C-R>=printf("Leaderf! bufTag %s", "")<CR><CR>
 
 let g:which_key_map['s'] = {
    \ 'name' : '+search' ,
    \ 'b'    : 'fuzzy-search-line' ,
    \ 'd'    : 'search-current-directory' ,
    \ 'l'    : 'resume-last-search' ,
+   \ 'i'    : 'jump-to-symbol' ,
    \ 'r'    : 'replace-selected-text' ,
    \ 's'    : 'search-current-buffer' ,
+   \ 'S'    : 'search-current-buffer-at-point' ,
    \ }
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
