@@ -31,6 +31,7 @@ Plug 'michaeljsmith/vim-indent-object'    " select and operate on various types 
 Plug 'terryma/vim-expand-region'          " visually select use '+' or '-'
 Plug 'tpope/vim-repeat'                   " repeat the last command using '.'
 Plug 'jreybert/vimagit'                   " magit for vim
+Plug 'octol/vim-cpp-enhanced-highlight'   " additional vim c++ syntax highlighting
 
 
 " tools
