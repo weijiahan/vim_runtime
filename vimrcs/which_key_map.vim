@@ -1,8 +1,11 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Misc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" nmap <silent> <leader>a <Plug>(ale_next_wrap)
 
+" Not a fan of floating windows for this
+let g:which_key_use_floating_win = 0
+
+" nmap <silent> <leader>a <Plug>(ale_next_wrap)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => which key map
@@ -14,8 +17,8 @@ let g:which_key_map =  {}
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => top menu
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <silent> <leader><cr> :noh<cr>
-let g:which_key_map['<CR>'] = 'disable-highlight'
+map <silent> <leader><tab> :noh<cr>
+let g:which_key_map['<Tab>'] = 'disable-highlight'
 noremap <leader>. :<C-U><C-R>=printf("Leaderf file %s", "")<CR><CR>
 let g:which_key_map['.'] = 'find-file'
 noremap <leader>' :<C-U>Leaderf! rg --recall<CR>
@@ -57,11 +60,17 @@ let g:which_key_map['b'] = {
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 noremap <leader>cj :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
 noremap <leader>cl :LeaderfFunction!<CR>
-
+if has("mac") || has("macunix")
+    nmap <silent> <leader>ck :Dash<CR>
+elseif has("linux") || has("unix")
+    nmap <silent> <leader>ck <Plug>Zeavim
+    vmap <silent> <leader>ck <Plug>ZVVisSelection
+endif
 let g:which_key_map['c'] = {
    \ 'name' : '+code' ,
    \ 'j'    : 'jump-to-symbol' ,
    \ 'l'    : 'function-explore' ,
+   \ 'k'    : 'docset' ,
    \ }
 
 
@@ -71,7 +80,7 @@ let g:which_key_map['c'] = {
 let g:Lf_ShortcutF = '<leader>ff'
 nnoremap <silent> <leader>fs :update<CR>
 map <leader>fS :w !sudo tee > /dev/null %<CR>
-map <leader>fd :e! ~/.vim_runtime/config.vim<cr>
+map <leader>fp :e! ~/.vim_runtime/<cr>
 noremap <leader>fm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
 
 " change file to sjis encoding
@@ -79,10 +88,10 @@ nnoremap <leader>fej :e! ++enc=sjis<CR>
 nnoremap <leader>feu :e! ++enc=utf8<CR>
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>fem mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+noremap <silent> <Leader>fy :let @+ = expand("%:p")<cr>
 
 let g:which_key_map['f'] = {
    \ 'name' : '+file' ,
-   \ 'd'    : 'open-vimrc-file' ,
    \ 'e'    : {
       \ 'name' : '+encode' ,
       \ 'j' : 'convert-to-sjis' ,
@@ -91,8 +100,20 @@ let g:which_key_map['f'] = {
       \ } ,
    \ 'f'    : 'find-file' ,
    \ 'm'    : 'mru' ,
+   \ 'p'    : 'open-vimrc-config-dir' ,
    \ 's'    : 'save-file' ,
    \ 'S'    : 'save-file-with-sudo' ,
+   \ 'y'    : 'copy-file-path' ,
+   \ }
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => git menu
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:magit_show_magit_mapping     = get(g:, 'magit_show_magit_mapping',        '<leader>g/' )
+
+let g:which_key_map['g'] = {
+   \ 'name' : '+git' ,
+   \ '/'    : 'magit-buffer' ,
    \ }
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -102,6 +123,7 @@ map <leader>op :NERDTreeToggle<cr>
 map <leader>oP :NERDTreeFind<cr>
 
 let g:which_key_map['o'] = {
+   \ 'name' : '+open' ,
    \ 'p'    : 'nerdtree-toggle' ,
    \ 'P'    : 'file-in-nerdtree' ,
    \ }
@@ -165,13 +187,6 @@ let g:which_key_map['s'] = {
 " => help menu
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:which_key_map.h = { 'name' : '+help' }
-if has("mac") || has("macunix")
-    nmap <silent> <leader>hd :Dash<CR>
-elseif has("linux") || has("unix")
-    nmap <silent> <leader>hd <Plug>Zeavim
-    vmap <silent> <leader>hd <Plug>ZVVisSelection
-endif
-let g:which_key_map.h.d = 'docset'
 noremap <leader>hh :<C-U><C-R>=printf("Leaderf help %s", "")<CR><CR>
 let g:which_key_map.h.h = 'help-tags'
 

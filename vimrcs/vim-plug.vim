@@ -25,6 +25,7 @@ Plug 'kien/rainbow_parentheses.vim'       " rainbow color for parentheses
 Plug 'michaeljsmith/vim-indent-object'    " select and operate on various types of objects
 Plug 'terryma/vim-expand-region'          " visually select use '+' or '-'
 Plug 'tpope/vim-repeat'                   " repeat the last command using '.'
+Plug 'jreybert/vimagit'                   " magit for vim
 
 
 " tools
@@ -36,8 +37,12 @@ elseif has("linux") || has("unix")
 endif
 Plug 'Chiel92/vim-autoformat'             " format code
 Plug 'tpope/vim-fugitive'                 " git plugin
-Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
-
+" Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
+" Plug 'skywind3000/vim-auto-popmenu'
+Plug 'skywind3000/vim-dict'
+" Plug 'ludovicchabant/vim-gutentags'       " auto generate tag file
+" Plug 'skywind3000/gutentags_plus'
 
 " lang
 Plug 'plasticboy/vim-markdown'            " markdown syntax
@@ -48,6 +53,7 @@ Plug 'nvie/vim-flake8'                    " syntax and style checker for python
 
 " local
 Plug '~/.vim_runtime/plugins/franca'      " fidl syntax
+Plug '~/.vim_runtime/plugins/auto-popmenu'" light weight auto complete plugin skywind3000/vim-auto-popmenu
 
 
 call plug#end()

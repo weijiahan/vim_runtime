@@ -9,7 +9,7 @@ elseif has("win16") || has("win32")
 elseif has("gui_gtk2")
     set gfn=Fira\ Code\ Retina\ 12,IBM\ Plex\ Mono\ 11,Hack\ 11,Source\ Code\ Pro\ 12,Bitstream\ Vera\ Sans\ Mono\ 11
 elseif has("linux") || has("unix")
-    set gfn=IBM\ Plex\ Mono\ SemiBold\ 12,Fira\ Code\ Retina\ 12,Hack\ 11,Source\ Code\ Pro\ 12,Bitstream\ Vera\ Sans\ Mono\ 11
+    set gfn=BlexMono\ Nerd\ Font\ Mono\ SemiBold\ 12,Fira\ Code\ Retina\ 12,Hack\ 11,Source\ Code\ Pro\ 12,Bitstream\ Vera\ Sans\ Mono\ 11
 endif
 
 " Disable scrollbars (real hackers don't use scrollbars for navigation!)
