@@ -101,11 +101,15 @@ let g:ale_lint_on_enter = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Git gutter (Git diff)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:gitgutter_enabled=1
-let g:gitgutter_map_keys = 0
-let g:gitgutter_max_signs = 5000
-let g:gitgutter_override_sign_column_highlight = 0
+" let g:gitgutter_enabled=1
+" let g:gitgutter_map_keys = 0
+" let g:gitgutter_max_signs = 5000
+" let g:gitgutter_override_sign_column_highlight = 0
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => vim-signify (Git diff)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set updatetime=100
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => RainbowParentheses

@@ -19,7 +19,12 @@ Plug 'ntpeters/vim-better-whitespace'     " highlight and strip all trailing whi
 Plug 'dominikduda/vim_current_word'       " highlighting word under cursor and all of its occurrences
 Plug 'amix/open_file_under_cursor.vim'    " open file under cursor
 Plug 'terryma/vim-multiple-cursors'       " editing in many places at once
-Plug 'airblade/vim-gitgutter'             " shows a git diff in the sign column
+" Plug 'airblade/vim-gitgutter'             " shows a git diff in the sign column
+if has('nvim') || has('patch-8.0.902')
+  Plug 'mhinz/vim-signify'
+else
+  Plug 'mhinz/vim-signify', { 'branch': 'legacy' }
+endif
 Plug 'easymotion/vim-easymotion'          " quickly jump to characters
 Plug 'kien/rainbow_parentheses.vim'       " rainbow color for parentheses
 Plug 'michaeljsmith/vim-indent-object'    " select and operate on various types of objects
