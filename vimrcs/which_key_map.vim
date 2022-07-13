@@ -170,7 +170,7 @@ noremap <leader>ss :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e ")<CR>
 noremap <leader>sS :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e %s ", expand("<cword>"))<CR>
 xnoremap <leader>sS :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e %s ", leaderf#Rg#visual())<CR>
 noremap <leader>sb :<C-U><C-R>=printf("Leaderf! line %s", "")<CR><CR>
-noremap <leader>si :<C-U><C-R>=printf("Leaderf! bufTag %s", "")<CR><CR>
+noremap <leader>si :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
 
 let g:which_key_map['s'] = {
    \ 'name' : '+search' ,

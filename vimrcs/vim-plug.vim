@@ -55,6 +55,7 @@ Plug 'plasticboy/vim-markdown'            " markdown syntax
 Plug 'aklt/plantuml-syntax'               " plantuml syntax
 Plug 'liuchengxu/graphviz.vim'            " graphviz syntax
 Plug 'nvie/vim-flake8'                    " syntax and style checker for python
+Plug 'rust-lang/rust.vim'
 
 
 " local
