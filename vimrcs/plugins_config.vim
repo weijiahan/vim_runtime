@@ -37,6 +37,7 @@ let NERDTreeShowBookmarks=1
 let NERDTreeShowHidden=1
 autocmd StdinReadPre * let s:std_in=1
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" autocmd BufEnter NERD_tree_* call SomeFunctionToChangeTheTabLabel
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
