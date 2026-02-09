@@ -1,10 +1,46 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugins Configuration
+" Modular configuration for better maintainability
+" Structure: vimrcs/plugins/{category}/{plugin}.vim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" UI Plugins
+source $VIMRC_ROOT/vimrcs/plugins/ui/lightline-nerdtree.vim
+
+" Editing Enhancement
+source $VIMRC_ROOT/vimrcs/plugins/editing/editing-enhance.vim
+
+" Git Integration
+source $VIMRC_ROOT/vimrcs/plugins/git/git.vim
+
+" Tools
+source $VIMRC_ROOT/vimrcs/plugins/tools/tools.vim
+
+" Language Support
+source $VIMRC_ROOT/vimrcs/plugins/lang/lang.vim
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => which-key plugin
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 nnoremap <localleader> :<c-u>WhichKey  ','<CR>
 vnoremap <localleader> :<c-u>WhichKeyVisual  ','<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => vim-auto-popmenu
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:apc_enable_ft = {'*':1}
+set cpt=.,k,w,b
+set completeopt=menu,menuone,noselect
+set shortmess+=c
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Vim grep
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
+set grepprg=/bin/grep\ -nH
+
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
