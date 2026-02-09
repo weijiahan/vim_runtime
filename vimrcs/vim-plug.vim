@@ -1,5 +1,5 @@
 " Specify a directory for plugins
-call plug#begin('~/.vim_runtime/plugged')
+call plug#begin('~/.dotfiles/vim_runtime/plugged')
 
 " keymap
 Plug 'liuchengxu/vim-which-key'
@@ -59,8 +59,8 @@ Plug 'rust-lang/rust.vim'
 
 
 " local
-Plug '~/.vim_runtime/plugins/franca'      " fidl syntax
-Plug '~/.vim_runtime/plugins/auto-popmenu'" light weight auto complete plugin skywind3000/vim-auto-popmenu
+Plug '~/.dotfiles/vim_runtime/plugins/franca'      " fidl syntax
+Plug '~/.dotfiles/vim_runtime/plugins/auto-popmenu'" light weight auto complete plugin skywind3000/vim-auto-popmenu
 
 
 call plug#end()

@@ -29,7 +29,7 @@ colorscheme NeoSolarized
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Fast editing and reloading of vimrc configs
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd! bufwritepost ~/.vim_runtime/config.vim source ~/.vim_runtime/config.vim
+autocmd! bufwritepost ~/.dotfiles/vim_runtime/config.vim source ~/.dotfiles/vim_runtime/config.vim
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -37,7 +37,7 @@ autocmd! bufwritepost ~/.vim_runtime/config.vim source ~/.vim_runtime/config.vim
 "    means that you can undo even when you close a buffer/VIM
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 try
-    set undodir=~/.vim_runtime/temp_dirs/undodir
+    set undodir=~/.dotfiles/vim_runtime/temp_dirs/undodir
     set undofile
 catch
 endtry

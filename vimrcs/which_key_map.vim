@@ -80,7 +80,7 @@ let g:which_key_map['c'] = {
 let g:Lf_ShortcutF = '<leader>ff'
 nnoremap <silent> <leader>fs :update<CR>
 map <leader>fS :w !sudo tee > /dev/null %<CR>
-map <leader>fp :e! ~/.vim_runtime/<cr>
+map <leader>fp :e! ~/.dotfiles/vim_runtime/<cr>
 noremap <leader>fm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
 
 " change file to sjis encoding
