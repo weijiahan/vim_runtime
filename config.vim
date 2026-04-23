@@ -30,3 +30,23 @@ let g:graphviz_output_format = 'png'
 " map <leader>s? z=
 
 set tags=./.tags;,.tags
+
+" Selenized colorscheme
+set background=dark
+colorscheme selenized
+
+
+"""""""""""""""""""""""""""""""
+" => Fcitx input method switch
+"""""""""""""""""""""""""""""""
+if has("gui_running")
+  function! Fcitx2en()
+    call system("fcitx-remote -s fcitx-keyboard-us")
+    call timer_start(100, {-> system("fcitx-remote -s fcitx-keyboard-us")})
+  endfunction
+
+  augroup fcitx_switch
+    autocmd!
+    autocmd InsertLeave * call Fcitx2en()
+  augroup END
+endif
