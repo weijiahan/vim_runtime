@@ -109,11 +109,17 @@ let g:which_key_map['f'] = {
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => git menu
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:magit_show_magit_mapping     = get(g:, 'magit_show_magit_mapping',        '<leader>g/' )
+nmap <leader>g/ :Git<CR>
+nmap <leader>gb :Git blame<CR>
+nmap <leader>gl :Git log --oneline<CR>
+nmap <leader>gd :Git diff<CR>
 
 let g:which_key_map['g'] = {
    \ 'name' : '+git' ,
-   \ '/'    : 'magit-buffer' ,
+   \ '/'    : 'git-status' ,
+   \ 'b'    : 'git-blame' ,
+   \ 'l'    : 'git-log' ,
+   \ 'd'    : 'git-diff' ,
    \ }
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

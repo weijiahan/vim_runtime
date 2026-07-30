@@ -24,7 +24,7 @@ if has("termguicolors")
     set termguicolors
 endif
 set background=dark
-colorscheme NeoSolarized
+colorscheme solarized8
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Fast editing and reloading of vimrc configs

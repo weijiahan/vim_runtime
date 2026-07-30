@@ -10,10 +10,10 @@ Plug 'liuchengxu/vim-which-key'
 " ============================================================================
 " UI
 " ============================================================================
-Plug 'iCyMind/NeoSolarized'
+Plug 'lifepillar/vim-solarized8'
 Plug 'itchyny/lightline.vim'
 Plug 'maximbaz/lightline-ale'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'preservim/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
 
@@ -24,10 +24,10 @@ Plug 'tomtom/tcomment_vim'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'dominikduda/vim_current_word'
 Plug 'amix/open_file_under_cursor.vim'
-Plug 'terryma/vim-multiple-cursors'
+Plug 'mg979/vim-visual-multi'
 Plug 'mhinz/vim-signify'
 Plug 'easymotion/vim-easymotion'
-Plug 'kien/rainbow_parentheses.vim'
+Plug 'luochen1990/rainbow'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'terryma/vim-expand-region'
 Plug 'tpope/vim-repeat'
@@ -36,15 +36,13 @@ Plug 'tpope/vim-repeat'
 " ============================================================================
 " GIT
 " ============================================================================
-Plug 'jreybert/vimagit', { 'on': 'Vimagit' }
 Plug 'tpope/vim-fugitive'
 
 
 " ============================================================================
 " TOOLS
 " ============================================================================
-Plug 'w0rp/ale'
-Plug 'Chiel92/vim-autoformat'
+Plug 'dense-analysis/ale'
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 Plug 'skywind3000/vim-dict'
 Plug 'liuchengxu/graphviz.vim', { 'for': 'dot' }
@@ -53,9 +51,8 @@ Plug 'liuchengxu/graphviz.vim', { 'for': 'dot' }
 " ============================================================================
 " LANGUAGES
 " ============================================================================
-Plug 'plasticboy/vim-markdown'
+Plug 'preservim/vim-markdown'
 Plug 'aklt/plantuml-syntax'
-Plug 'nvie/vim-flake8'
 Plug 'rust-lang/rust.vim'
 Plug 'octol/vim-cpp-enhanced-highlight'
 

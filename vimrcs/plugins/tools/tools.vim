@@ -11,6 +11,14 @@ let g:ale_linters = {
 \   'go': ['go', 'golint', 'errcheck']
 \}
 
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'python': ['black', 'isort'],
+\   'c': ['clang-format'],
+\   'cpp': ['clang-format'],
+\   'objc': ['clang-format'],
+\}
+
 " Disabling highlighting
 let g:ale_set_highlights = 0
 
@@ -18,13 +26,8 @@ let g:ale_set_highlights = 0
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 0
 
-
-" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => vim-autoformat
-" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-noremap <F3> :Autoformat<CR>
-" au BufWrite * :Autoformat
-let g:formatdef_clangformat_objc = '"clang-format -style=file"'
+" Format with <F3> (replaces vim-autoformat)
+noremap <F3> :ALEFix<CR>
 
 
 " """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
