@@ -31,9 +31,13 @@ let g:graphviz_output_format = 'png'
 
 set tags=./.tags;,.tags
 
-" Selenized colorscheme
+" Colorscheme (with fallback)
 set background=dark
-colorscheme selenized
+try
+    colorscheme selenized
+catch
+    colorscheme desert
+endtry
 
 
 """""""""""""""""""""""""""""""

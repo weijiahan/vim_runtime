@@ -23,8 +23,7 @@ if has("termguicolors")
     " enable true color
     set termguicolors
 endif
-set background=dark
-colorscheme solarized8
+" Note: colorscheme is set in config.vim with fallback logic
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Fast editing and reloading of vimrc configs

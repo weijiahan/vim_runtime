@@ -10,7 +10,6 @@ Plug 'liuchengxu/vim-which-key'
 " ============================================================================
 " UI
 " ============================================================================
-Plug 'lifepillar/vim-solarized8'
 Plug 'itchyny/lightline.vim'
 Plug 'maximbaz/lightline-ale'
 Plug 'preservim/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }

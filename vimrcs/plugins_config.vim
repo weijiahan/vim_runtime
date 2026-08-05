@@ -49,31 +49,6 @@ set grepprg=/bin/grep\ -nH
 let g:tcomment_mapleader2=0
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => snipMate (beside <TAB> support <CTRL-j>)
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-ino <c-j> <c-r>=snipMate#TriggerSnippet()<cr>
-snor <c-j> <esc>i<right><c-r>=snipMate#TriggerSnippet()<cr>
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vim grep
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
-set grepprg=/bin/grep\ -nH
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Nerd Tree
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:NERDTreeWinPos = "left"
-let NERDTreeIgnore = ['\.pyc$', '__pycache__']
-let g:NERDTreeWinSize=35
-let NERDTreeShowBookmarks=1
-let NERDTreeShowHidden=1
-autocmd StdinReadPre * let s:std_in=1
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-" autocmd BufEnter NERD_tree_* call SomeFunctionToChangeTheTabLabel
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -85,31 +60,6 @@ let g:VM_maps['Find Subword Under'] = '<C-s>'
 let g:VM_maps['Select All']         = '<A-s>'
 let g:VM_maps['Skip Region']        = '<C-x>'
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => lightline
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:lightline = {
-      \ 'colorscheme': 'solarized',
-      \ 'active': {
-      \   'left': [ ['mode', 'paste'],
-      \             ['fugitive', 'readonly', 'filename', 'modified'] ],
-      \   'right': [ ['lineinfo'], ['percent'], ['fileformat', 'fileencoding', 'charvaluehex']]
-      \ },
-      \ 'component': {
-      \   'readonly': '%{&filetype=="help"?"":&readonly?"🔒":""}',
-      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-      \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}',
-      \   'charvaluehex': '0x%B'
-      \ },
-      \ 'component_visible_condition': {
-      \   'readonly': '(&filetype!="help"&& &readonly)',
-      \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-      \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
-      \ },
-      \ 'separator': { 'left': '', 'right': '' },
-      \ 'subseparator': { 'left': '|', 'right': '|' }
-      \ }
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -195,14 +145,6 @@ let g:Lf_Gtagslabel = 'native-pygments'
 let g:Lf_RootMarkers = ['.projectile']
 noremap gD :<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>
 noremap gd :<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => vim-auto-popmenu
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:apc_enable_ft = {'*':1}
-set cpt=.,k,w,b
-set completeopt=menu,menuone,noselect
-set shortmess+=c
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
